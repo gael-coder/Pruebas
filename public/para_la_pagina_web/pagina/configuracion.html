@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIDACI LETRAS</title>
+    <link rel="stylesheet" href="confiuracionCSS.css">
+    <link rel="icon" href="DIDACTILETRAS.png" type="image/png">
+
+</head>
+
+<body>
+    <div class="container">
+        <h1>CONFIGURACIÓN DE LA CUENTA</h1>
+
+        <div class="input-group">
+            <label for="nombre">Nombre:</label>
+            <textarea class="textbox" id="nombre" placeholder="Escribe aquí..." maxlength="100"></textarea>
+        </div>
+
+        <div class="input-group">
+            <label for="Apellido">Apellido:</label>
+            <textarea class="textbox" id="Apellido" placeholder="Escribe aquí..." maxlength="100"></textarea>
+        </div>
+
+        <div class="input-group">
+            <label for="email">Correo electrónico:</label>
+            <textarea class="textbox" id="email" placeholder="Escribe aquí..." maxlength="100"></textarea>
+        </div>
+
+        <div class="input-group">
+            <label for="telefono">Telefono:</label>
+            <textarea class="textbox" id="telefono" placeholder="Escribe aquí..." maxlength="10"></textarea>
+        </div>
+
+        <div class="input-group">
+            <label for="contraseña">Contraseña:</label>
+            <textarea class="textbox" id="password" placeholder="Escribe aquí..." maxlength="100"></textarea>
+        </div>
+
+        <div class="input-group">
+            <label for="confirmaContraseña">Confirmar contraseña:</label>
+            <textarea class="textbox" id="confirm_password" placeholder="Escribe aquí..." maxlength="100"></textarea>
+        </div>
+
+    </div>
+
+
+    <div class="footer">
+        <div class="cuadro-blanco">
+            <button id="botonModificar" onclick="ModificarUSUARIO()" class="botonModificar">Modificar</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('telefono').addEventListener('input', function (event) {
+            const regex = /[^0-9]/g;
+            event.target.value = event.target.value.replace(regex, '');
+        });
+
+
+        document.getElementById("botonModificar").addEventListener("click", function () {
+            var campos = document.querySelectorAll(".textbox");
+            campos.forEach(function (campo) {
+                if (campo.value.trim() === "") { // Verifica si el campo está vacío
+                    campo.style.backgroundColor = "#ED4D4D"; // Cambia el color de fondo a rojo
+                } else {
+                    campo.style.backgroundColor = ""; // Restablece el color de fondo a blanco
+                }
+            });
+        });
+        let usuario;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            usuario = localStorage.getItem('usuario');
+            console.log(usuario);
+
+            // Una vez que se ha obtenido el correo electrónico del usuario, puedes llamar a la función obtenerInfoUsuario
+            obtenerInfoUsuario();
+        });
+        //MODIFICACION DE USUARIOS
+        async function ModificarUSUARIO() {
+            const nombre = document.getElementById('nombre').value;
+            const apellido = document.getElementById('Apellido').value;
+            const email = document.getElementById('email').value;
+            const telefono = document.getElementById('telefono').value;
+            const password = document.getElementById('password').value;
+            const confirm_password = document.getElementById('confirm_password').value;
+            const ID_usuario = usuario;
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailPattern.test(email)) {
+                alert('Por favor, introduce una dirección de correo electrónico válida.');
+                return; // Detiene la ejecución de la función
+            }
+
+            // Validar que el correo electrónico contenga .com
+            if (!email.includes('.com')) {
+                alert('Por favor, introduce una dirección de correo electrónico con el dominio ".com".');
+                return; // Detiene la ejecución de la función
+            }
+            if (password == confirm_password) {
+                try {
+                    const response = await fetch("/ModificarUsuarioCliente", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            nombre: nombre, apellido: apellido,
+                            email: email, telefono: telefono, password: password,
+                            confirm_password: confirm_password, ID_email: ID_usuario
+                        })
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        alert('Usuario modificado correctamente');
+                        localStorage.setItem('usuario', email);
+                        location.reload();
+
+                    } else {
+                        alert('Error al modificar la Ususario: ' + data.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error al modifircar la Ususario por 2');
+                }
+            } else {
+
+                alert('Error contraseña no son identicas')
+            }
+        }
+
+
+
+
+        async function obtenerInfoUsuario() {
+            try {
+                // Verificar si usuario es null antes de hacer la solicitud
+                if (usuario !== null) {
+                    // Codifica el correo electrónico antes de pasarlo como parte de la URL
+                    const correoEncoded = encodeURIComponent(usuario);
+                    const response = await fetch(`/obtenerUsuarioCliente/${correoEncoded}`);
+                    const usuarioData = await response.json();
+
+                    // Rellena los campos con la información del usuario
+                    document.getElementById('nombre').value = usuarioData.nombre || "";
+                    document.getElementById('Apellido').value = usuarioData.apellidos || "";
+                    document.getElementById('email').value = usuarioData.correo || "";
+                    document.getElementById('telefono').value = usuarioData.telefono || "";
+                    document.getElementById('password').value = usuarioData.contrasena || "";
+
+                } else {
+                    // Si usuario es null, limpiar los campos
+                    document.getElementById('nombre').value = '';
+                    document.getElementById('Apellido').value = '';
+                    document.getElementById('email').value = '';
+                    document.getElementById('telefono').value = '';
+                    document.getElementById('password').value = '';
+                    document.getElementById('confirm_password').value = '';
+                }
+            } catch (error) {
+                console.error('Error al obtener el usuario:', error);
+            }
+        }
+
+
+
+
+
+    </script>
+</body>
+
+</html>

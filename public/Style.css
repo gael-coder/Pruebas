@@ -1,0 +1,34 @@
+/* En este apartado se encontraran los tipos de estilos que entendra nuestra pagina */
+body.fondo {
+    background: linear-gradient(to  right, #2BE1E1, #3374ff);
+}
+/* Poropiedades para los titulos y subtitulos */
+h1.tittle{
+    font-size: 42px;
+    text-align: center;
+    font-weight: bold;
+    text-shadow: none;
+    
+}
+/* Propiedades para los botones */
+button.btn1 {
+    display: inline-block;
+    background-color: rgb(245, 245, 245);
+    border-radius: 20px;
+    padding: 15px 30px;
+    cursor: pointer;
+    border-color: #2BE1E1;
+    margin-right: 10px;
+}
+/* Propiedades para los div */
+div.pg1{
+    text-align: center;
+    align-content: center;
+    border: 0cap;
+}
+/* Propiedades para los label */
+label.lb1{
+    font-size: 20px;
+    font-weight:bold;
+    
+}

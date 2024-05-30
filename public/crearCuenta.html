@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>DIDACTI LETRAS</title>
+    <link rel="stylesheet" type="text/css" href="Style.css" media="screen" />
+    <meta charset="UTF-8">
+    <link rel="icon" href="para_la_pagina_web/pagina/DIDACTILETRAS.png" type="image/png">
+
+</head>
+
+<body class="fondo">
+    <h1 style="font-size: 45px; margin-left: 16px;">CREAR CUENTA
+        <img src="logo.jpeg" align="right" style="border-radius: 23px; width: 180px;">
+    </h1>
+    <div style="text-align: left; padding: auto;">
+        <form id="registro" style="margin-left: 16px;">
+            <label for="nombre">Nombre</label> <br>
+            <input type="text" id="nombre" size="40"> <br><br>
+            <label for="apellido">Apellido</label> <br>
+            <input type="text" id="apellido" size="40"> <br><br>
+            <label for="correo">Correo</label><br>
+            <input type="text" id="correo" size="40"> <br><br>
+            <label for="telefono">Teléfono</label> <br>
+            <input type="text" id="telefono" size="40" maxlength="10"> <br><br>
+            <label for="password">Contraseña</label> <br>
+            <input type="password" id="password" size="40"> <br><br>
+            <label for="confirm_password">Confirmar contraseña</label><br>
+            <input type="password" id="confirm_password" size="40"> <br><br>
+            <button type="button" class="btn1" style="margin-left: 15px;" onclick="crearCuenta()">CREAR CUENTA</button>
+        </form>
+    </div>
+
+    <script>
+        async function crearCuenta() {
+            const nombre = document.getElementById('nombre').value;
+            const apellido = document.getElementById('apellido').value;
+            const correo = document.getElementById('correo').value;
+            const telefono = document.getElementById('telefono').value;
+            const password = document.getElementById('password').value;
+            const confirm_password = document.getElementById('confirm_password').value;
+
+
+            // Validación de contraseñas
+            if (password !== confirm_password) {
+                alert('Las contraseñas no coinciden');
+                document.getElementById('password').value = '';
+                document.getElementById('confirm_password').value = '';
+                return;
+            }
+            // Validar que el correo electrónico tenga el formato correcto
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(correo)) {
+                alert('Por favor, introduce una dirección de correo electrónico válida.');
+                return;
+            }
+
+            // Validar que el correo electrónico contenga el dominio ".com"
+            if (!correo.includes('.com')) {
+                alert('Por favor, introduce una dirección de correo electrónico con el dominio ".com".');
+                return;
+            }
+            // Petición POST al endpoint '/registro' en el servidor
+            try {
+                const response = await fetch('/registro', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ nombre, apellido, correo, telefono, password })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert('Cuenta creada exitosamente');
+                    document.getElementById('nombre').value = '';
+                    document.getElementById('apellido').value = '';
+                    document.getElementById('correo').value = '';
+                    document.getElementById('telefono').value = '';
+                    document.getElementById('password').value = '';
+                    document.getElementById('confirm_password').value = '';
+                    // Puedes redirigir al usuario a otra página después de registrar
+                    window.location.href = 'index.html';
+                } else {
+                    alert('Error al crear la cuenta 1: ' + data.message);
+                    if (data.message === 'El correo ya está registrado') {
+                        document.getElementById('correo').value = '';
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al crear la cuenta 2');
+            }
+        }
+
+
+        document.getElementById("telefono").addEventListener("input", function () {
+            let telefonoInput = document.getElementById("telefono");
+            let valor = telefonoInput.value;
+            let nuevoValor = "";
+            for (let i = 0; i < valor.length; i++) {
+                if (!isNaN(parseInt(valor[i], 10))) {
+                    nuevoValor += valor[i];
+                }
+            }
+            telefonoInput.value = nuevoValor;
+        });
+
+    </script>
+
+</body>
+
+</html>

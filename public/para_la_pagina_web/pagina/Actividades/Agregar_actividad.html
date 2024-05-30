@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIDACTI LETRAS</title>
+    <link rel="stylesheet" href="AgregarActividad.css"> <!-- Enlaza tu archivo CSS aquí -->
+    <link rel="icon" href="../DIDACTILETRAS.png" type="image/png">
+
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="left-section"></div>
+        <div class="separator"></div>
+        <div class="right-section">
+            <forsm>
+                <div class="activity-info">
+                    <label for="id_actividad">id_actividad:</label>
+                    <input type="text" id="id_actividad" list="idActividadInput" name="id_actividad"></input>
+                    <datalist id="idActividadInput"></datalist>
+
+                    <!-------------------------------------------------------------------------------------------------->
+
+                    <label for="idLeccion">Asignar Leccion:</label>
+                    <input type="text" id="idLeccion" list="idLeccionesInput" name="idLeccion"></select>
+                    <datalist id="idLeccionesInput"></datalist>
+                    <!-------------------------------------------------------------------------------------------------->
+
+                    <label for="NumeroDeActividad">Numero de actividad:</label>
+                    <input type="text" id="NumeroDeActividad" name="NumeroDeActividad">
+
+                    <!-------------------------------------------------------------------------------------------------->
+
+
+
+                    <label for="TipoDeActividad">Tipo de actividad:</label>
+                    <select id="TipoDeActividad" name="TipoDeActividad" onchange="seleccionarTipoDeActividad()">
+                        <option value="">Seleccionar...</option>
+                        <option value="pregunta">Pregunta</option>
+                        <option value="seleccion_palabras_video">Pregunta con video</option>
+                        <option value="seleccion_palabras_audio">Pregunta con audio</option>
+                        <option value="contenido_audiovisual">Contenido audiovisual</option>
+                    </select>
+                </div>
+
+
+                <!----------------------------------------------------------------------------------------------------------------------- -->
+                <!-- esto es para las actividades de tipo pregunta---------------------------------------------------------------------------------------------- -->
+
+                <div class="activity-info" id="identificadorDiv">
+                    <label for="titulo" id="titulo" style="position: absolute; left: -15px; top: -35px;">
+                        INGRESAR NUEVA
+                        ACTIVIDAD:</label>
+                    <label for="identificador" id="identificadorLabel">Identificador:</label>
+                    <textarea type="text" id="identificador" name="identificador" rows="4"
+                        style="width: 100%; height: 100px;"></textarea>
+
+                    <!-- Primer par de Cuadros -->
+                    <div class="cuadro">
+                        <div class="opciones">
+                            <div class="opcion" id="opcionV1Preguntas">
+                                <div class="opcion-texto">V</div>
+                            </div>
+                            <div class="opcion" id="opcionF1Preguntas">
+                                <div class="opcion-texto">F</div>
+                            </div>
+                        </div>
+
+                        <textarea id="cuadro1Pregunta" name="cuadro1" rows="4" placeholder="Respuesta 1"></textarea>
+                    </div>
+
+                    <!-- Segundo par de Cuadros -->
+                    <div class="cuadro">
+                        <div class="opciones">
+                            <div class="opcion" id="opcionV2Preguntas">
+                                <div class="opcion-texto">V</div>
+                            </div>
+                            <div class="opcion" id="opcionF2Preguntas">
+                                <div class="opcion-texto">F</div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="opcion_0_1_2" value="">
+
+                        <textarea id="cuadro2Pregunta" name="cuadro2" rows="4" placeholder="Respuesta 2"></textarea>
+                    </div>
+
+                    <!-- Tercer par de Cuadros -->
+                    <div class="cuadro">
+                        <div class="opciones">
+                            <div class="opcion" id="opcionV3Preguntas">
+                                <div class="opcion-texto">V</div>
+                            </div>
+                            <div class="opcion" id="opcionF3Preguntas">
+                                <div class="opcion-texto">F</div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="opcion_0_1_3" value="">
+
+                        <textarea id="cuadro3Pregunta" name="cuadro3" rows="4" placeholder="Respuesta 3"></textarea>
+                    </div>
+
+                    <!-- Cuarto par de Cuadros -->
+                    <div class="cuadro">
+                        <div class="opciones">
+                            <div class="opcion" id="opcionV4Preguntas">
+                                <div class="opcion-texto">V</div>
+                            </div>
+                            <div class="opcion" id="opcionF4Preguntas">
+                                <div class="opcion-texto">F</div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="opcion_0_1_4" value="">
+
+                        <textarea id="cuadro4Pregunta" name="cuadro4" rows="4" placeholder="Respuesta 4"></textarea>
+                    </div>
+                </div>
+
+                <!----------------------------------------------------------------------------------------------------------------------- -->
+
+                <!-- Fin de la repetición -->
+                <div class="buttons">
+                    <button type="button" id="botuno">Crear</button>
+                    <button type="button" id="botdos">Modificar</button>
+                    <button type="button" id="bottres">Eliminar</button>
+                </div>
+                </form>
+        </div>
+
+    </div>
+
+
+
+
+    <!----------------ACTIVIDADES DE TIPO AUDIO------------------------------------------------------------------------------------------------------- -->
+
+    <div class="activity-info" id="identificadorDiv2" style="display: none;">
+        <label for="titulo" id="titulo" style="position: absolute; left: -15px; top: -35px;">INGRESAR NUEVA
+            ACTIVIDAD:</label>
+        <label for="identificador2" id="identificadorLabel2">Identificador:</label>
+        <textarea type="text" id="identificador2" name="identificador2" rows="4"
+            style="width: 100%; height: 100px;"></textarea>
+
+        <!-- Recuadro para visualizar audio -->
+        <div id="audioContainer" style="margin-top: 20px;">
+            <audio id="audioPlayer" style="width: 100%; height: auto;" controls></audio>
+            <div id="playerControls">
+                <input type="range" id="reproductorBarra" value="0" step="0.1">
+                <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+                <button id="playButton" class="custom-button">&#9658;</button>
+                <button id="pauseButton" class="custom-button">&#10074;&#10074;</button>
+                <!-- Símbolo de dos barras verticales -->
+            </div>
+        </div>
+        <!-- Botón "Seleccionar archivo MP3" -->
+        <button id="seleccionarArchivoAudio" class="custom-button">Seleccionar archivo MP3</button>
+        <span id="fileName">sin archivo seleccionado</span>
+
+
+
+        <!-- Primer par de Cuadros -->
+        <div class="cuadro">
+            <div class="opciones">
+                <div class="opcion" id="opcionV1Videoaudio">
+                    <div class="opcion-texto">V</div>
+                </div>
+                <div class="opcion" id="opcionF1Videoaudio">
+                    <div class="opcion-texto">F</div>
+                </div>
+            </div>
+            <textarea id="cuadro1VideoAUDIO" name="cuadro1" rows="4" placeholder="Respuesta 1"></textarea>
+        </div>
+
+        <!-- Segundo par de Cuadros -->
+        <div class="cuadro">
+            <div class="opciones">
+                <div class="opcion" id="opcionV2Videoaudio">
+                    <div class="opcion-texto">V</div>
+                </div>
+                <div class="opcion" id="opcionF2Videoaudio">
+                    <div class="opcion-texto">F</div>
+                </div>
+            </div>
+            <textarea id="cuadro2VideoAUDIO" name="cuadro2" rows="4" placeholder="Respuesta 2"></textarea>
+        </div>
+
+        <!-- Tercer par de Cuadros -->
+        <div class="cuadro">
+            <div class="opciones">
+                <div class="opcion" id="opcionV3Videoaudio">
+                    <div class="opcion-texto">V</div>
+                </div>
+                <div class="opcion" id="opcionF3Videoaudio">
+                    <div class="opcion-texto">F</div>
+                </div>
+            </div>
+            <textarea id="cuadro3VideoAUDIO" name="cuadro3" rows="4" placeholder="Respuesta 3"></textarea>
+        </div>
+
+        <!-- Cuarto par de Cuadros -->
+        <div class="cuadro">
+            <div class="opciones">
+                <div class="opcion" id="opcionV4Videoaudio">
+                    <div class="opcion-texto">V</div>
+                </div>
+                <div class="opcion" id="opcionF4Videoaudio">
+                    <div class="opcion-texto">F</div>
+                </div>
+            </div>
+            <textarea id="cuadro4VideoAUDIO" name="cuadro4" rows="4" placeholder="Respuesta 4"></textarea>
+        </div>
+    </div>
+
+
+    <!--------------------ACTIVIDAD DE TIPO VIDEO--------------------------------------------------------------------------------------------------- -->
+
+
+    <div class="activity-info" id="identificadorDiv3" style="display: none;">
+        <label for="titulo" id="titulo" style="position: absolute; left: -15px; top: -35px;">INGRESAR NUEVA
+            ACTIVIDAD:</label>
+        <label for="identificador" id="identificadorLabel">Identificador:</label>
+        <textarea style="width: 100%; height: 100px;" type="text" id="identificador3" name="identificador3"
+            rows="4"></textarea>
+
+        <div id="contenedorVideo">
+            <video id="videoPlayer" controls style="width: 100%; height: auto;">
+                Tu navegador no soporta la etiqueta de video.
+            </video>
+        </div>
+
+        <button id="seleccionarArchivo">Seleccionar archivo MP4</button>
+
+
+        <!-- Primer par de Cuadros -->
+        <div class="cuadro">
+            <div class="opciones">
+                <div class="opcion" id="opcionV1VideoPregunta">
+                    <div class="opcion-texto">V</div>
+                </div>
+                <div class="opcion" id="opcionF1VideoPregunta">
+                    <div class="opcion-texto">F</div>
+                </div>
+            </div>
+            <textarea id="cuadro1VideoPregunta" name="cuadro1VideoPregunta" rows="4"
+                placeholder="Respuesta 1"></textarea>
+        </div>
+
+        <!-- Segundo par de Cuadros -->
+        <div class="cuadro">
+            <div class="opciones">
+                <div class="opcion" id="opcionV2VideoPregunta">
+                    <div class="opcion-texto">V</div>
+                </div>
+                <div class="opcion" id="opcionF2VideoPregunta">
+                    <div class="opcion-texto">F</div>
+                </div>
+            </div>
+            <textarea id="cuadro2VideoPregunta" name="cuadro2" rows="4" placeholder="Respuesta 2"></textarea>
+        </div>
+
+        <!-- Tercer par de Cuadros -->
+        <div class="cuadro">
+            <div class="opciones">
+                <div class="opcion" id="opcionV3VideoPregunta">
+                    <div class="opcion-texto">V</div>
+                </div>
+                <div class="opcion" id="opcionF3VideoPregunta">
+                    <div class="opcion-texto">F</div>
+                </div>
+            </div>
+            <textarea id="cuadro3VideoPregunta" name="cuadro3" rows="4" placeholder="Respuesta 3"></textarea>
+        </div>
+
+        <!-- Cuarto par de Cuadros -->
+        <div class="cuadro">
+            <div class="opciones">
+                <div class="opcion" id="opcionV4VideoPregunta">
+                    <div class="opcion-texto">V</div>
+                </div>
+                <div class="opcion" id="opcionF4VideoPregunta">
+                    <div class="opcion-texto">F</div>
+                </div>
+            </div>
+            <textarea id="cuadro4VideoPregunta" name="cuadro4" rows="4" placeholder="Respuesta 4"></textarea>
+        </div>
+
+
+    </div>
+
+
+    <!------------------MATERIAL AUDIO VISUAL----------------------------------------------------------------------------------------------------- -->
+
+
+
+    <div class="activity-info" id="identificadorDiv4" style="display: none;">
+        <label for="titulo" id="titulo" style="position: absolute; left: -15px; top: -35px;">Ingresar material
+            audiovisual:</label>
+        <!-- Rectángulo para agregar descripción -->
+        <label for="descripcion" style="margin-top: 0.02cm; display: block;">Descripción:</label>
+        <textarea style="width: 100%; height: 100px;" id="descripcion4" name="descripcion" rows="2"
+            style="margin-top: -0.02cm; width: 100%;"></textarea>
+
+        <!-- Reemplazo del cuadro de texto por un contenedor de video -->
+        <div id="contenedorVideo2">
+            <video id="videoPlayer2" controls style="width: 100%; height: auto;">
+                Tu navegador no soporta la etiqueta de video.
+            </video>
+        </div>
+        <!-- Botón "Seleccionar archivo MP4" -->
+        <button type="button" id="botSeleccionarMP42">Seleccionar archivo MP4</button>
+    </div>
+
+    </div>
+
+    </div>
+
+
+    <!-- ---------------------------------------------------------------------------------------->
+
+    <script src="Agregar_actividad.js"></script>
+
+    <!-- el script para que los botones de crear funciones de forma independiente -->
+    <script>
+        //para insertar
+        document.getElementById("botuno").addEventListener("click", function () {
+            var tipoDeActividad = document.getElementById("TipoDeActividad").value;
+            if (tipoDeActividad === "pregunta") {
+                crearActividadPregunta();
+            } else if (tipoDeActividad === "seleccion_palabras_video") {
+                registroActividadVideo();
+            } else if (tipoDeActividad === "seleccion_palabras_audio") {
+                registroActividadAudio();
+            } else if (tipoDeActividad === "contenido_audiovisual") {
+                registroMaterialAudioVisual();
+            }
+        });
+        //para modificar
+        document.getElementById("botdos").addEventListener("click", function () {
+            var tipoDeActividad = document.getElementById("TipoDeActividad").value;
+            if (tipoDeActividad === "pregunta") {
+                modificarActividadPregunta();
+            } else if (tipoDeActividad === "seleccion_palabras_video") {
+                modificarActividadVideo();
+            } else if (tipoDeActividad === "seleccion_palabras_audio") {
+                modificarActividadAudio();
+            } else if (tipoDeActividad === "contenido_audiovisual") {
+                modificarMaterialAudioVisual();
+            }
+        });
+        //para eliminar
+        document.getElementById("bottres").addEventListener("click", function () {
+            var tipoDeActividad = document.getElementById("TipoDeActividad").value;
+            if (tipoDeActividad === "pregunta") {
+                eliminarActividadPregunta();
+            } else if (tipoDeActividad === "seleccion_palabras_video") {
+                borrarActividadVideo();
+            } else if (tipoDeActividad === "seleccion_palabras_audio") {
+                borrarActividadAudio();
+            } else if (tipoDeActividad === "contenido_audiovisual") {
+                borrarMaterialAudioVisual();
+            }
+        });
+
+
+    </script>
+    <!-- script para permitir solo numeros -->
+    <script>
+        document.getElementById('id_actividad').addEventListener('input', function (event) {
+            const regex = /[^0-9]/g;
+            event.target.value = event.target.value.replace(regex, '');
+        });
+        document.getElementById('idLeccion').addEventListener('input', function (event) {
+            const regex = /[^0-9]/g;
+            event.target.value = event.target.value.replace(regex, '');
+        });
+        document.getElementById('NumeroDeActividad').addEventListener('input', function (event) {
+            const regex = /[^0-9]/g;
+            event.target.value = event.target.value.replace(regex, '');
+        });
+    </script>
+    <!-- script para agregar las id de las lecciones -->
+    <script>
+        async function actualizarIDLecciones() {
+            try {
+                const response = await fetch('/actualizarIDLeccionesEvaluacion');
+                const LeccionID = await response.json();
+
+                const select = document.getElementById('idLeccionesInput');
+                select.innerHTML = ''; // Limpiar opciones actuales
+
+
+
+                // Iterar sobre los usuarios y agregar opciones
+                LeccionID.forEach(Leccion => {
+                    const option = document.createElement('option');
+                    option.value = Leccion.idLeccion;
+                    option.textContent = `Numero ID de la leccion numero ${Leccion.numero_leccion}`;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error al obtener los datos de la leccion:', error);
+            }
+
+
+        }
+        // Llamar a la función para actualizar los IDs cuando se cargue la página
+        window.addEventListener('DOMContentLoaded', actualizarIDLecciones);
+
+        // Event listener para detectar cambios en el select
+        document.getElementById('numeroID').addEventListener('change', function () {
+            const selectedUserId = this.value;
+            obtenerInfoUsuario(selectedUserId);
+        });
+
+
+        function mostrarOtro() {
+            const selectedUserId = document.getElementById('numeroIDInput').value;
+            obtenerInfoUsuario(selectedUserId);
+        }
+
+        // Función para obtener información del usuario
+        function obtenerInfoUsuario(idUsuario) {
+            // Aquí puedes escribir la lógica para obtener información del usuario basada en el ID seleccionado
+            console.log('ID de usuario seleccionado:', idUsuario);
+        }
+
+
+
+
+
+    </script>
+    <!-- el script para los id de las actividades -->
+    <script>
+        async function actualizarIDActividad() {
+            try {
+                const response = await fetch('/actualizarIDActividad');
+                const LeccionID = await response.json();
+
+                const select = document.getElementById('idActividadInput');
+                // Iterar sobre los usuarios y agregar opciones
+                LeccionID.forEach(Actividad => {
+                    const option = document.createElement('option');
+                    option.value = Actividad.idActividad;
+                    option.textContent = `Numero ID de la actividad '${Actividad.numeroDeActividad}' de tipo "${Actividad.Tipo_actividad}" de la leccion '${Actividad.numero_leccion}'`;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error al obtener los datos de la leccion:', error);
+            }
+
+
+        }
+        // Llamar a la función para actualizar los IDs cuando se cargue la página
+        window.addEventListener('DOMContentLoaded', actualizarIDActividad);
+
+        // Event listener para detectar cambios en el select
+        document.getElementById('id_actividad').addEventListener('change', function () {
+            const selectedUserId = this.value;
+            obtenerInfoUsuario(selectedUserId);
+
+        });
+
+        function mostrarOtro() {
+            const selectedUserId = document.getElementById('id_actividad').value;
+            obtenerInfoUsuario(selectedUserId);
+        }
+
+        // Función para obtener información del usuario
+        function obtenerInfoUsuario(idUsuario) {
+            // Aquí puedes escribir la lógica para obtener información del usuario basada en el ID seleccionado
+            console.log('ID de usuario seleccionado:', idUsuario);
+        }
+
+    </script>
+    <!-- CRUD para la actividad de pregunta -->
+    <script>
+        // Variable para almacenar el valor
+        var valorSeleccionado1 = null;
+        var valorSeleccionado2 = null;
+        var valorSeleccionado3 = null;
+        var valorSeleccionado4 = null;
+
+
+        // Obtener los elementos div por sus IDs
+        var opcionV1 = document.getElementById('opcionV1Preguntas');
+        var opcionF1 = document.getElementById('opcionF1Preguntas');
+
+        var opcionV2 = document.getElementById('opcionV2Preguntas');
+        var opcionF2 = document.getElementById('opcionF2Preguntas');
+
+        var opcionV3 = document.getElementById('opcionV3Preguntas');
+        var opcionF3 = document.getElementById('opcionF3Preguntas');
+
+        var opcionV4 = document.getElementById('opcionV4Preguntas');
+        var opcionF4 = document.getElementById('opcionF4Preguntas');
+
+        // Agregar event listeners para el clic en cada opción
+        //valores de la respuestas 1
+
+        opcionV1.addEventListener('click', function () {
+            valorSeleccionado1 = 1;
+            //alert('Seleccionaste V, ' + valorSeleccionado1);
+
+        });
+
+        opcionF1.addEventListener('click', function () {
+            valorSeleccionado1 = 0;
+            // alert('Seleccionaste f, ' + valorSeleccionado1);
+
+        });
+        //-----------------------------------------
+        //valores de la respuestas 2
+
+        opcionV2.addEventListener('click', function () {
+            valorSeleccionado2 = 1;
+            // alert('Seleccionaste V2');
+        });
+
+        opcionF2.addEventListener('click', function () {
+            valorSeleccionado2 = 0;
+            // alert('Seleccionaste F2');
+        });
+        //-----------------------------------------
+        //valores de la respuestas 3
+
+        opcionV3.addEventListener('click', function () {
+            valorSeleccionado3 = 1;
+            //   alert('Seleccionaste V3');
+        });
+
+        opcionF3.addEventListener('click', function () {
+            valorSeleccionado3 = 0;
+            // alert('Seleccionaste F4');
+        });
+        //-----------------------------------------
+        //valores de la respuestas 4
+        opcionV4.addEventListener('click', function () {
+            valorSeleccionado4 = 1;
+            // alert('Seleccionaste V4');
+        });
+
+        opcionF4.addEventListener('click', function () {
+            valorSeleccionado4 = 0;
+            // alert('Seleccionaste F');
+        });
+        //-----------------------------------------
+
+        async function crearActividadPregunta() {
+            const identificador = document.getElementById('identificador').value;
+            const idLeccion = document.getElementById('idLeccion').value;
+            const NumeroDeActividad = document.getElementById('NumeroDeActividad').value;
+            const TipoDeActividad = document.getElementById('TipoDeActividad').value;
+
+            const cuadro1Pregunta = document.getElementById('cuadro1Pregunta').value;
+            const cuadro2Pregunta = document.getElementById('cuadro2Pregunta').value;
+            const cuadro3Pregunta = document.getElementById('cuadro3Pregunta').value;
+            const cuadro4Pregunta = document.getElementById('cuadro4Pregunta').value;
+
+
+            try {
+
+                const response = await fetch("/registroActividadPregunta", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        identificador: identificador,
+                        idLeccion: idLeccion,
+                        NumeroDeActividad: NumeroDeActividad,
+                        TipoDeActividad: TipoDeActividad,
+                        cuadro1Pregunta: cuadro1Pregunta,
+                        cuadro2Pregunta: cuadro2Pregunta,
+                        cuadro3Pregunta: cuadro3Pregunta,
+                        cuadro4Pregunta: cuadro4Pregunta,
+                        valor1: valorSeleccionado1,
+                        valor2: valorSeleccionado2,
+                        valor3: valorSeleccionado3,
+                        valor4: valorSeleccionado4
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('Actividad de tipo pregunta fue creada correctamente');
+                    location.reload(); // Esta línea reinicia la página
+                } else {
+                    alert('Error al crear la actividad de tipo pregunta: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al crear la Actividad de tipo pregunta');
+
+            }
+        }
+
+        async function modificarActividadPregunta() {
+            const id_actividad = document.getElementById('id_actividad').value;
+            const identificador = document.getElementById('identificador').value;
+            const idLeccion = document.getElementById('idLeccion').value;
+            const NumeroDeActividad = document.getElementById('NumeroDeActividad').value;
+            const TipoDeActividad = document.getElementById('TipoDeActividad').value;
+
+            const cuadro1Pregunta = document.getElementById('cuadro1Pregunta').value;
+            const cuadro2Pregunta = document.getElementById('cuadro2Pregunta').value;
+            const cuadro3Pregunta = document.getElementById('cuadro3Pregunta').value;
+            const cuadro4Pregunta = document.getElementById('cuadro4Pregunta').value;
+
+
+            try {
+
+                const response = await fetch("/modificarActividadPregunta", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id_actividad: id_actividad,
+                        identificador: identificador,
+                        idLeccion: idLeccion,
+                        NumeroDeActividad: NumeroDeActividad,
+                        TipoDeActividad: TipoDeActividad,
+                        cuadro1Pregunta: cuadro1Pregunta,
+                        cuadro2Pregunta: cuadro2Pregunta,
+                        cuadro3Pregunta: cuadro3Pregunta,
+                        cuadro4Pregunta: cuadro4Pregunta,
+                        valor1: valorSeleccionado1,
+                        valor2: valorSeleccionado2,
+                        valor3: valorSeleccionado3,
+                        valor4: valorSeleccionado4
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('Actividad de tipo pregunta fue modificada correctamente');
+                    location.reload(); // Esta línea reinicia la página
+                } else {
+                    alert('Error al modificar la actividad de tipo pregunta: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al modificar    la Actividad de tipo pregunta');
+
+            }
+        }
+
+        async function eliminarActividadPregunta() {
+            const id_actividad = document.getElementById('id_actividad').value;
+            try {
+
+                const response = await fetch("/eliminarActividadPregunta", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id_actividad: id_actividad,
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('Actividad de tipo pregunta fue modificada correctamente');
+                    location.reload(); // Esta línea reinicia la página
+                } else {
+                    alert('Error al modificar la actividad de tipo pregunta: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al modificar    la Actividad de tipo pregunta');
+
+            }
+        }
+
+
+
+
+    </script>
+    <!---------------------- CRUD para la actividad de pregunta con video -------------------->
+    <script>
+        //codigo para el video
+        // Variable para almacenar el valor
+        var valorSeleccionado1video = null;
+        var valorSeleccionado2video = null;
+        var valorSeleccionado3video = null;
+        var valorSeleccionado4video = null;
+
+
+        // Obtener los elementos div por sus IDs
+        var opcionV1video = document.getElementById('opcionV1VideoPregunta');
+        var opcionF1Video = document.getElementById('opcionF1VideoPregunta');
+
+        var opcionV2video = document.getElementById('opcionV2VideoPregunta');
+        var opcionF2video = document.getElementById('opcionF2VideoPregunta');
+
+        var opcionV3video = document.getElementById('opcionV3VideoPregunta');
+        var opcionF3video = document.getElementById('opcionF3VideoPregunta');
+
+        var opcionV4video = document.getElementById('opcionV4VideoPregunta');
+        var opcionF4video = document.getElementById('opcionF4VideoPregunta');
+
+        // Agregar event listeners para el clic en cada opción
+        //valores de la respuestas 1
+
+        opcionV1video.addEventListener('click', function () {
+            valorSeleccionado1video = 1;
+            // alert('Seleccionaste V, ' + valorSeleccionado1video);
+            console.log('Seleccionaste V, ' + valorSeleccionado1video);
+
+        });
+
+        opcionF1Video.addEventListener('click', function () {
+            valorSeleccionado1video = 0;
+            // alert('Seleccionaste f, ' + valorSeleccionado1video);
+
+        });
+        //-----------------------------------------
+        //valores de la respuestas 2
+
+        opcionV2video.addEventListener('click', function () {
+            valorSeleccionado2video = 1;
+            //alert('Seleccionaste V2');
+        });
+
+        opcionF2video.addEventListener('click', function () {
+            valorSeleccionado2video = 0;
+            // alert('Seleccionaste F2');
+        });
+        //-----------------------------------------
+        //valores de la respuestas 3
+
+        opcionV3video.addEventListener('click', function () {
+            valorSeleccionado3video = 1;
+            // alert('Seleccionaste V3');
+        });
+
+        opcionF3video.addEventListener('click', function () {
+            valorSeleccionado3video = 0;
+            // alert('Seleccionaste F4');
+        });
+        //-----------------------------------------
+        //valores de la respuestas 4
+        opcionV4video.addEventListener('click', function () {
+            valorSeleccionado4video = 1;
+            // alert('Seleccionaste V4');
+        });
+
+        opcionF4video.addEventListener('click', function () {
+            valorSeleccionado4video = 0;
+            //alert('Seleccionaste F');
+        });
+        //codigo para visualizar con el url------------------------------------------------------------------------------------------
+        let file = null;
+
+        document.getElementById('seleccionarArchivo').addEventListener('click', function () {
+            var input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'video/mp4';
+            input.style.display = 'none';
+            input.onchange = async function (event) {
+                file = event.target.files[0];
+                if (file && file.type !== 'video/mp4') {
+                    alert('Solo se permite archivos mp4');
+                    file = null;
+                    return;
+                }
+                 // Validar caracteres especiales en el nombre del archivo
+                 var regex = /[!@#$%^&*()_+=\[\]{}|;:'",<>\/?\\]/;
+                if (file && regex.test(file.name)) {
+                    alert('El nombre del archivo contiene caracteres especiales no permitidos');
+                    file = null;
+                    return;
+                }
+                try {
+                    var videoPlayer = document.getElementById('videoPlayer');
+                    var videoURL = URL.createObjectURL(file);
+                    videoPlayer.src = videoURL;
+                    // await uploadVideoToServer(file);
+                    console.log(file);
+
+                } catch (error) {
+                    console.error('Error al subir el video:', error);
+                }
+            };
+
+            document.body.appendChild(input);
+
+            input.click();
+        });
+
+        async function registroActividadVideo() {
+            if (!file) {
+                alert('No se asignó un video o falta reasignar un nuevo video');
+                return;
+            }
+            const identificador = document.getElementById('identificador3').value;
+            const idLeccion = document.getElementById('idLeccion').value;
+            const NumeroDeActividad = document.getElementById('NumeroDeActividad').value;
+            const TipoDeActividad = document.getElementById('TipoDeActividad').value;
+
+            const cuadro1Pregunta = document.getElementById('cuadro1VideoPregunta').value;
+            const cuadro2Pregunta = document.getElementById('cuadro2VideoPregunta').value;
+            const cuadro3Pregunta = document.getElementById('cuadro3VideoPregunta').value;
+            const cuadro4Pregunta = document.getElementById('cuadro4VideoPregunta').value;
+
+            try {
+                const formData = new FormData();
+                formData.append('identificador', identificador);
+                formData.append('idLeccion', idLeccion);
+                formData.append('NumeroDeActividad', NumeroDeActividad);
+                formData.append('TipoDeActividad', TipoDeActividad);
+                formData.append('cuadro1Pregunta', cuadro1Pregunta);
+                formData.append('cuadro2Pregunta', cuadro2Pregunta);
+                formData.append('cuadro3Pregunta', cuadro3Pregunta);
+                formData.append('cuadro4Pregunta', cuadro4Pregunta);
+                formData.append('valor1', valorSeleccionado1video);
+                formData.append('valor2', valorSeleccionado2video);
+                formData.append('valor3', valorSeleccionado3video);
+                formData.append('valor4', valorSeleccionado4video);
+                formData.append('video', file);
+
+                const response = await fetch("/registroActividadVideo", {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert('Actividad de tipo pregunta fue creada correctamente');
+                    location.reload();
+                } else {
+                    alert('Error al crear la actividad de tipo pregunta: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al crear la Actividad de tipo pregunta');
+            }
+        }
+
+        async function modificarActividadVideo() {
+            if (!file) {
+                alert('vuelve asignar un video');
+                return;
+            }
+            const id_actividad = document.getElementById('id_actividad').value;
+            const identificador = document.getElementById('identificador3').value;
+            const idLeccion = document.getElementById('idLeccion').value;
+            const NumeroDeActividad = document.getElementById('NumeroDeActividad').value;
+            const TipoDeActividad = document.getElementById('TipoDeActividad').value;
+
+            const cuadro1Pregunta = document.getElementById('cuadro1VideoPregunta').value;
+            const cuadro2Pregunta = document.getElementById('cuadro2VideoPregunta').value;
+            const cuadro3Pregunta = document.getElementById('cuadro3VideoPregunta').value;
+            const cuadro4Pregunta = document.getElementById('cuadro4VideoPregunta').value;
+
+
+            try {
+                const formData = new FormData();
+                formData.append('id_actividad', id_actividad);
+                formData.append('identificador', identificador);
+                formData.append('idLeccion', idLeccion);
+                formData.append('NumeroDeActividad', NumeroDeActividad);
+                formData.append('TipoDeActividad', TipoDeActividad);
+                formData.append('cuadro1Pregunta', cuadro1Pregunta);
+                formData.append('cuadro2Pregunta', cuadro2Pregunta);
+                formData.append('cuadro3Pregunta', cuadro3Pregunta);
+                formData.append('cuadro4Pregunta', cuadro4Pregunta);
+                formData.append('valor1', valorSeleccionado1video);
+                formData.append('valor2', valorSeleccionado2video);
+                formData.append('valor3', valorSeleccionado3video);
+                formData.append('valor4', valorSeleccionado4video);
+                formData.append('video', file);
+
+                const response = await fetch("/modificarActividadVideo", {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert('Actividad de tipo video fue modificada correctamente');
+                    location.reload();
+                } else {
+                    alert('Error al modificada la actividad de tipo video: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al modificada la Actividad de tipo video');
+            }
+        }
+
+        async function borrarActividadVideo() {
+            const id_actividad = document.getElementById('id_actividad').value;
+            try {
+
+                const response = await fetch("/borrarActividadVideo", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id_actividad: id_actividad,
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('Actividad de tipo pregunta fue borrada correctamente');
+                    location.reload(); // Esta línea reinicia la página
+                } else {
+                    alert('Error al borrar la actividad de tipo pregunta: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al borrar la Actividad de tipo pregunta');
+
+            }
+        }
+
+
+
+
+
+        async function uploadVideoToServer(file) {
+            const formData = new FormData();
+            formData.append('video', file);
+
+            const response = await fetch('/upload-video', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                throw new Error(`Error al subir el video: ${errorMessage}`);
+            }
+
+            const result = await response.text();
+            console.log(result); // Mensaje del servidor
+        }
+
+
+
+
+
+
+    </script>
+    <!---------------------- CRUD para la actividad de pregunta con audio -------------------->
+    <script>  //codigo para el video
+
+        //---------------------codigo para el audio
+        let fileAudio = null;
+        document.getElementById('seleccionarArchivoAudio').addEventListener('click', function () {
+            var input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'audio/mp3';
+            input.style.display = 'none';
+            input.onchange = async function (event) {
+                fileAudio = event.target.files[0];
+                var fileNameSpan = document.getElementById('fileName');
+
+                // Validar el tipo de archivo
+                if (fileAudio && fileAudio.type !== 'audio/mp3') {
+                    alert('Solo se permiten archivos mp3');
+                    fileAudio = null;
+                    fileNameSpan.textContent = 'sin archivo seleccionado';
+                    return;
+                }
+                var regex = /[!@#$%^&*()_+=\[\]{}|;:'",<>\/?\\]/;
+                if (fileAudio && regex.test(fileAudio.name)) {
+                    alert('El nombre del archivo contiene caracteres especiales no permitidos');
+                    fileAudio = null;
+                    return;
+                }
+                try {
+                    if (fileAudio) {
+                        var audioPlayer = document.getElementById('audioPlayer');
+                        var audioURL = URL.createObjectURL(fileAudio);
+                        audioPlayer.src = audioURL;
+                        fileNameSpan.textContent = fileAudio.name;
+
+                        // Opcional: aquí puedes añadir la lógica para subir el archivo al servidor si es necesario.
+                        console.log(fileAudio);
+                    } else {
+                        fileNameSpan.textContent = 'sin archivo seleccionado';
+                    }
+                } catch (error) {
+                    console.error('Error al cargar el audio:', error);
+                    fileNameSpan.textContent = 'Error al cargar el archivo';
+                }
+            };
+
+            document.body.appendChild(input);
+            input.click();
+        });
+
+        var audioPlayer = document.getElementById('audioPlayer');
+        var playButton = document.getElementById('playButton');
+        var pauseButton = document.getElementById('pauseButton');
+        var reproductorBarra = document.getElementById('reproductorBarra');
+        var currentTimeSpan = document.getElementById('currentTime');
+        var durationSpan = document.getElementById('duration');
+
+        playButton.addEventListener('click', function () {
+            audioPlayer.play();
+        });
+
+        pauseButton.addEventListener('click', function () {
+            audioPlayer.pause();
+        });
+
+        audioPlayer.addEventListener('timeupdate', function () {
+            reproductorBarra.value = audioPlayer.currentTime;
+            currentTimeSpan.textContent = formatTime(audioPlayer.currentTime);
+        });
+
+        audioPlayer.addEventListener('loadedmetadata', function () {
+            reproductorBarra.max = audioPlayer.duration;
+            durationSpan.textContent = formatTime(audioPlayer.duration);
+        });
+
+        reproductorBarra.addEventListener('input', function () {
+            audioPlayer.currentTime = reproductorBarra.value;
+        });
+
+        function formatTime(seconds) {
+            var minutes = Math.floor(seconds / 60);
+            var seconds = Math.floor(seconds % 60);
+            return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+        }
+
+
+
+        // Variable para almacenar el valor
+        var valorSeleccionado1audio = null;
+        var valorSeleccionado2audio = null;
+        var valorSeleccionado3audio = null;
+        var valorSeleccionado4audio = null;
+
+
+        // Obtener los elementos div por sus IDs
+        var opcionV1audio = document.getElementById('opcionV1Videoaudio');
+        var opcionF1audio = document.getElementById('opcionF1Videoaudio');
+
+        var opcionV2audio = document.getElementById('opcionV2Videoaudio');
+        var opcionF2audio = document.getElementById('opcionF2Videoaudio');
+
+        var opcionV3audio = document.getElementById('opcionV3Videoaudio');
+        var opcionF3audio = document.getElementById('opcionF3Videoaudio');
+
+        var opcionV4audio = document.getElementById('opcionV4Videoaudio');
+        var opcionF4audio = document.getElementById('opcionF4Videoaudio');
+
+        // Agregar event listeners para el clic en cada opción
+        //valores de la respuestas 1
+
+        opcionV1audio.addEventListener('click', function () {
+            valorSeleccionado1audio = 1;
+            console.log('Seleccionaste V, ' + valorSeleccionado1audio);
+
+        });
+
+        opcionF1audio.addEventListener('click', function () {
+            valorSeleccionado1audio = 0;
+            console.log('Seleccionaste f, ' + valorSeleccionado1audio);
+
+        });
+        //-----------------------------------------
+        //valores de la respuestas 2
+
+        opcionV2audio.addEventListener('click', function () {
+            valorSeleccionado2audio = 1;
+            console.log('Seleccionaste V2');
+        });
+
+        opcionF2audio.addEventListener('click', function () {
+            valorSeleccionado2audio = 0;
+            console.log('Seleccionaste F2');
+        });
+        //-----------------------------------------
+        //valores de la respuestas 3
+
+        opcionV3audio.addEventListener('click', function () {
+            valorSeleccionado3audio = 1;
+            console.log('Seleccionaste V3');
+        });
+
+        opcionF3audio.addEventListener('click', function () {
+            valorSeleccionado3audio = 0;
+            console.log('Seleccionaste F4');
+        });
+        //-----------------------------------------
+        //valores de la respuestas 4
+        opcionV4audio.addEventListener('click', function () {
+            valorSeleccionado4audio = 1;
+            console.log('Seleccionaste V4');
+        });
+
+        opcionF4audio.addEventListener('click', function () {
+            valorSeleccionado4audio = 0;
+            console.log('Seleccionaste F');
+        });
+
+        //ahora sigue los cruds
+        async function registroActividadAudio() {
+            if (!fileAudio) {
+                alert('no se asigno un audio o falta reasignar un nuevo audio');
+                return;
+            }
+            const identificador = document.getElementById('identificador2').value;
+            const idLeccion = document.getElementById('idLeccion').value;
+            const NumeroDeActividad = document.getElementById('NumeroDeActividad').value;
+            const TipoDeActividad = document.getElementById('TipoDeActividad').value;
+
+            const cuadro1Pregunta = document.getElementById('cuadro1VideoAUDIO').value;
+            const cuadro2Pregunta = document.getElementById('cuadro2VideoAUDIO').value;
+            const cuadro3Pregunta = document.getElementById('cuadro3VideoAUDIO').value;
+            const cuadro4Pregunta = document.getElementById('cuadro4VideoAUDIO').value;
+
+            try {
+                const formData = new FormData();
+                formData.append('identificador', identificador);
+                formData.append('idLeccion', idLeccion);
+                formData.append('NumeroDeActividad', NumeroDeActividad);
+                formData.append('TipoDeActividad', TipoDeActividad);
+                formData.append('cuadro1Pregunta', cuadro1Pregunta);
+                formData.append('cuadro2Pregunta', cuadro2Pregunta);
+                formData.append('cuadro3Pregunta', cuadro3Pregunta);
+                formData.append('cuadro4Pregunta', cuadro4Pregunta);
+                formData.append('valor1', valorSeleccionado1audio);
+                formData.append('valor2', valorSeleccionado2audio);
+                formData.append('valor3', valorSeleccionado3audio);
+                formData.append('valor4', valorSeleccionado4audio);
+                formData.append('audio', fileAudio);
+
+                const response = await fetch("/registroActividadAudio", {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert('Actividad de tipo audio fue creada correctamente');
+                    location.reload();
+                } else {
+                    alert('Error al crear la actividad de tipo pregaudiounta: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al crear la Actividad de tipo audio');
+            }
+        }
+
+
+        //modificar
+        async function modificarActividadAudio() {
+            if (!fileAudio) {
+                alert('vuelve asignar un video');
+                return;
+            }
+            const id_actividad = document.getElementById('id_actividad').value;
+            const identificador = document.getElementById('identificador2').value;
+            const idLeccion = document.getElementById('idLeccion').value;
+            const NumeroDeActividad = document.getElementById('NumeroDeActividad').value;
+            const TipoDeActividad = document.getElementById('TipoDeActividad').value;
+
+            const cuadro1Pregunta = document.getElementById('cuadro1VideoAUDIO').value;
+            const cuadro2Pregunta = document.getElementById('cuadro2VideoAUDIO').value;
+            const cuadro3Pregunta = document.getElementById('cuadro3VideoAUDIO').value;
+            const cuadro4Pregunta = document.getElementById('cuadro4VideoAUDIO').value;
+
+
+            try {
+                const formData = new FormData();
+                formData.append('id_actividad', id_actividad);
+                formData.append('identificador', identificador);
+                formData.append('idLeccion', idLeccion);
+                formData.append('NumeroDeActividad', NumeroDeActividad);
+                formData.append('TipoDeActividad', TipoDeActividad);
+                formData.append('cuadro1Pregunta', cuadro1Pregunta);
+                formData.append('cuadro2Pregunta', cuadro2Pregunta);
+                formData.append('cuadro3Pregunta', cuadro3Pregunta);
+                formData.append('cuadro4Pregunta', cuadro4Pregunta);
+                formData.append('valor1', valorSeleccionado1audio);
+                formData.append('valor2', valorSeleccionado2audio);
+                formData.append('valor3', valorSeleccionado3audio);
+                formData.append('valor4', valorSeleccionado4audio);
+                formData.append('audio', fileAudio);
+
+                const response = await fetch("/modificarActividadAudio", {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert('Actividad de tipo audio fue modificada correctamente');
+                    location.reload();
+                } else {
+                    alert('Error al modificada la actividad de tipo audio: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al modificada la Actividad de tipo video');
+            }
+        }
+        //eliminar
+        async function borrarActividadAudio() {
+            const id_actividad = document.getElementById('id_actividad').value;
+            try {
+
+                const response = await fetch("/borrarActividadAudio", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id_actividad: id_actividad,
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('Actividad de tipo audio fue borrada correctamente');
+                    location.reload(); // Esta línea reinicia la página
+                } else {
+                    alert('Error al borrar la actividad de tipo audio: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al borrar la Actividad de tipo audio');
+
+            }
+        }
+    </script>
+    <!---------------------- CRUD PARA EL MATERIAL AUDIOVISUAL -------------------->
+    <script>
+        let file3 = null;
+
+        document.getElementById('botSeleccionarMP42').addEventListener('click', function () {
+            var input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'video/mp4';
+            input.style.display = 'none';
+            input.onchange = async function (event) {
+                file3 = event.target.files[0];
+                // Validar el tipo de archivo
+                if (file3 && file3.type !== 'video/mp4') {
+                    alert('Solo se permiten archivos mp4');
+                    file3 = null;
+                    return;
+                }
+                // Validar caracteres especiales en el nombre del archivo
+                var regex = /[!@#$%^&*()_+=\[\]{}|;:'",<>\/?\\]/;
+                if (file3 && regex.test(file3.name)) {
+                    alert('El nombre del archivo contiene caracteres especiales no permitidos');
+                    file3 = null;
+                    return;
+                }
+                try {
+                    var videoPlayer = document.getElementById('videoPlayer2');
+                    var videoURL = URL.createObjectURL(file3);
+                    videoPlayer.src = videoURL;
+                    //  await uploadVideoToServer(file);
+                    console.log(file3)
+
+                } catch (error) {
+                    console.error('Error al subir el video:', error);
+                }
+            };
+
+            document.body.appendChild(input);
+
+            input.click();
+        });
+
+        async function registroMaterialAudioVisual() {
+            if (!file3) {
+                alert('no se asigno un video o falta reasignar un nuevo video');
+                return;
+            }
+            const identificador = document.getElementById('descripcion4').value;
+            const idLeccion = document.getElementById('idLeccion').value;
+            const NumeroDeActividad = document.getElementById('NumeroDeActividad').value;
+            const TipoDeActividad = document.getElementById('TipoDeActividad').value;
+
+            try {
+                const formData = new FormData();
+                formData.append('identificador', identificador);
+                formData.append('idLeccion', idLeccion);
+                formData.append('NumeroDeActividad', NumeroDeActividad);
+                formData.append('TipoDeActividad', TipoDeActividad);
+                formData.append('video', file3);
+
+                const response = await fetch("/registroMaterialAudioVisual", {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert('Actividad de tipo pregunta fue creada correctamente');
+                    location.reload();
+                } else {
+                    alert('Error al crear la actividad de tipo pregunta: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al crear la Actividad de tipo pregunta');
+            }
+        }
+
+        //modificar
+        async function modificarMaterialAudioVisual() {
+            if (!file3) {
+                alert('vuelve asignar un video');
+                return;
+            }
+            const identificador = document.getElementById('descripcion4').value;
+            const idLeccion = document.getElementById('idLeccion').value;
+            const NumeroDeActividad = document.getElementById('NumeroDeActividad').value;
+            const TipoDeActividad = document.getElementById('TipoDeActividad').value;
+            const id_actividad = document.getElementById('id_actividad').value;
+
+            try {
+                const formData = new FormData();
+                formData.append('id_actividad', id_actividad);
+                formData.append('identificador', identificador);
+                formData.append('idLeccion', idLeccion);
+                formData.append('NumeroDeActividad', NumeroDeActividad);
+                formData.append('TipoDeActividad', TipoDeActividad);
+                formData.append('video', file3);
+
+                const response = await fetch("/modificarMaterialAudioVisual", {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert('material audiovisual fue modificado exitosamente');
+                    location.reload();
+                } else {
+                    alert('Error al modificar material audiovisual: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al modificar material audiovisual');
+            }
+        }
+
+        //eliminar
+        async function borrarMaterialAudioVisual() {
+            const id_actividad = document.getElementById('id_actividad').value;
+            try {
+
+                const response = await fetch("/borrarMaterialAudioVisual", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id_actividad: id_actividad,
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('Actividad de tipo pregunta fue borrada correctamente');
+                    location.reload(); // Esta línea reinicia la página
+                } else {
+                    alert('Error al borrar la actividad de tipo pregunta: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al borrar la Actividad de tipo pregunta');
+
+            }
+        }
+
+    </script>
+
+
+    <!-- codigo para rellenar los cuadros de preguntas de asignar leccion, numero actividad y la descripcion con el id actividad -->
+    <script>
+        async function obtenerInfoActividades(id_actividad) {
+            try {
+                if (id_actividad !== null) {
+                    const response = await fetch(`/obtenerInfoActividades/${id_actividad}`);
+
+                    if (response.status === 200) {
+                        const actividad = await response.json();
+
+                        // Verificar si la actividad es de tipo pregunta
+                        if (actividad.Tipo_actividad === 'pregunta') {
+                            // Rellena los campos con la información de la pregunta
+                            document.getElementById('identificador').value = actividad.descripcion || "";
+                            document.getElementById('idLeccion').value = actividad.idLeccion || "";
+                            document.getElementById('NumeroDeActividad').value = actividad.numeroDeActividad || "";
+                        } else if (actividad.Tipo_actividad === 'seleccion_palabras_video') {
+
+                            document.getElementById('identificador3').value = actividad.descripcion || "";
+                            document.getElementById('idLeccion').value = actividad.idLeccion || "";
+                            document.getElementById('NumeroDeActividad').value = actividad.numeroDeActividad || "";
+
+                            console.log(actividad.archivo);
+                            // Verificar si la actividad tiene un archivo de video
+                            if (actividad.archivo) {
+                                const archivoBinario = actividad.archivo.data;
+
+                                // Crear un Blob con el tipo MIME correcto
+                                const videoBlob = new Blob([new Uint8Array(archivoBinario)], { type: 'video/mp4' });
+
+                                // Crear una URL del Blob para el elemento de video
+                                const videoURL = URL.createObjectURL(videoBlob);
+
+                                // Visualizar el video
+                                var videoPlayer = document.getElementById('videoPlayer');
+                                videoPlayer.src = videoURL;
+                                videoPlayer.load(); // Asegúrate de llamar a load() para cargar el nuevo recurso
+
+                                file = videoBlob;
+                                //alert(file);
+                                // Notificar al usuario que el video se ha cargado
+                                console.log('El video se ha cargado correctamente.');
+                            } else {
+                                console.error('La actividad no tiene un archivo de video.');
+                                alert('La actividad no tiene un archivo de video.');
+                            }
+
+                        } else if (actividad.Tipo_actividad === 'seleccion_palabras_audio') {
+                            document.getElementById('identificador2').value = actividad.descripcion || "";
+                            document.getElementById('idLeccion').value = actividad.idLeccion || "";
+                            document.getElementById('NumeroDeActividad').value = actividad.numeroDeActividad || "";
+
+                            console.log(actividad.archivo);
+                            if (actividad.archivo) {
+                                const archivoBinario = actividad.archivo.data;
+
+                                // Crear un Blob con el tipo MIME correcto para MP3
+                                const audioBlob = new Blob([new Uint8Array(archivoBinario)], { type: 'audio/mp3' });
+
+                                // Crear una URL del Blob para el elemento de audio
+                                const audioURL = URL.createObjectURL(audioBlob);
+
+                                // Visualizar el audio
+                                var audioPlayer = document.getElementById('audioPlayer');
+                                audioPlayer.src = audioURL;
+                                audioPlayer.load(); // Asegúrate de llamar a load() para cargar el nuevo recurso
+
+                                file = audioBlob;
+                                //alert(file);
+                                // Notificar al usuario que el audio se ha cargado
+                                console.log('El audio se ha cargado correctamente.');
+                            } else {
+                                console.error('La actividad no tiene un archivo de audio.');
+                                alert('La actividad no tiene un archivo de audio.');
+                            }
+
+                        } else if (actividad.Tipo_actividad === 'contenido_audiovisual') {
+                            document.getElementById('descripcion4').value = actividad.descripcion || "";
+                            document.getElementById('idLeccion').value = actividad.idLeccion || "";
+                            document.getElementById('NumeroDeActividad').value = actividad.numeroDeActividad || "";
+
+                            console.log(actividad.archivo);
+                            // Verificar si la actividad tiene un archivo de video
+                            if (actividad.archivo) {
+                                const archivoBinario = actividad.archivo.data;
+
+                                // Crear un Blob con el tipo MIME correcto
+                                const videoBlob = new Blob([new Uint8Array(archivoBinario)], { type: 'video/mp4' });
+
+                                // Crear una URL del Blob para el elemento de video
+                                const videoURL = URL.createObjectURL(videoBlob);
+
+                                // Visualizar el video
+                                var videoPlayer = document.getElementById('videoPlayer2');
+                                videoPlayer.src = videoURL;
+                                videoPlayer.load(); // Asegúrate de llamar a load() para cargar el nuevo recurso
+
+                                file = videoBlob;
+                                //alert(file);
+                                // Notificar al usuario que el video se ha cargado
+                                console.log('El video se ha cargado correctamente.');
+                            } else {
+                                console.error('La actividad no tiene un archivo de video.');
+                                alert('La actividad no tiene un archivo de video.');
+                            }
+
+                        } else {
+                            limpiarCampos();
+                        }
+                    } else if (response.status === 404) {
+                        // Si no se encontró la actividad, limpiar los campos
+                        limpiarCampos();
+                    } else {
+                        // Si la respuesta no es satisfactoria, limpiar los campos y mostrar un mensaje de error
+                        limpiarCampos();
+                        console.error('Error al obtener la actividad:', response.statusText);
+                    }
+                } else {
+                    // Si el id de actividad es null, limpiar los campos
+                    limpiarCampos();
+                }
+            } catch (error) {
+                // Si hay un error en la solicitud, limpiar los campos y mostrar el error
+                limpiarCampos();
+                console.error('Error al obtener la actividad:', error);
+            }
+        }
+
+        document.getElementById('id_actividad').addEventListener('input', function () {
+            const selectedUserId = this.value;
+            obtenerInfoActividades(selectedUserId);
+        });
+
+
+    </script>
+    <!-- codigo para rellenar los cuadros de preguntas y valores con el id actividad -->
+    <script>
+        //codigo para visualizar el cuadro de preguntas normal
+        async function obtenerRespuestasYValores(id_actividad) {
+            try {
+                if (id_actividad !== null) {
+                    const response = await fetch(`/obtenerRespuestasYValores/${id_actividad}`);
+
+                    if (response.status === 200) {
+                        const respuestas = await response.json();
+
+                        // Verificar si se encontraron respuestas
+                        if (respuestas.length > 0) {
+
+                            // Iterar sobre las respuestas en grupos de cuatro
+                            for (let i = 0; i < respuestas.length; i += 4) {
+                                const grupoRespuestas = respuestas.slice(i, i + 4);
+
+                                // Almacenar respuestas y realizar clics dependiendo del valor
+                                grupoRespuestas.forEach((respuesta, index) => {
+                                    const cuadroPregunta = document.getElementById(`cuadro${index + 1}Pregunta`);
+                                    const opcionPregunta = document.getElementById(`opcionV${index + 1}Preguntas`);
+                                    const opcionFalsa = document.getElementById(`opcionF${index + 1}Preguntas`);
+
+                                    cuadroPregunta.value = respuesta.Respuesta || "";
+
+                                    if (respuesta.Valor === true) {
+                                        opcionPregunta.click();
+                                    } else {
+                                        opcionFalsa.click();
+                                    }
+                                });
+                            }
+                        } else {
+                            console.log("No se encontraron respuestas para este usuario.");
+                        }
+                    } else {
+                        console.log("Error al obtener las respuestas del servidor.");
+                    }
+                } else {
+                    console.log("El id de actividad es nulo.");
+                }
+            } catch (error) {
+                console.error('Error al obtener la información de las respuestas:', error);
+            }
+        }
+
+        //codigo para visualizar el cuadro de preguntas de video
+        async function obtenerRespuestasYValoresVideo(id_actividad) {
+            try {
+                if (id_actividad !== null) {
+                    const response = await fetch(`/obtenerRespuestasYValores/${id_actividad}`);
+
+                    if (response.status === 200) {
+                        const respuestas = await response.json();
+
+                        // Verificar si se encontraron respuestas
+                        if (respuestas.length > 0) {
+
+                            // Iterar sobre las respuestas en grupos de cuatro
+                            for (let i = 0; i < respuestas.length; i += 4) {
+                                const grupoRespuestas = respuestas.slice(i, i + 4);
+
+                                // Almacenar respuestas y realizar clics dependiendo del valor
+                                grupoRespuestas.forEach((respuesta, index) => {
+                                    const cuadroPregunta = document.getElementById(`cuadro${index + 1}VideoPregunta`);
+                                    const opcionPregunta = document.getElementById(`opcionV${index + 1}VideoPregunta`);
+                                    const opcionFalsa = document.getElementById(`opcionF${index + 1}VideoPregunta`);
+
+                                    cuadroPregunta.value = respuesta.Respuesta || "";
+
+                                    if (respuesta.Valor === true) {
+                                        opcionPregunta.click();
+                                    } else {
+                                        opcionFalsa.click();
+                                    }
+                                });
+                            }
+                        } else {
+                            console.log("No se encontraron respuestas para este usuario.");
+                        }
+                    } else {
+                        console.log("Error al obtener las respuestas del servidor.");
+                    }
+                } else {
+                    console.log("El id de actividad es nulo.");
+                }
+            } catch (error) {
+                console.error('Error al obtener la información de las respuestas:', error);
+            }
+        }
+
+        //codigo para visualizar el cuadro de preguntas de audio
+        async function obtenerRespuestasYValoresAudio(id_actividad) {
+            try {
+                if (id_actividad !== null) {
+                    const response = await fetch(`/obtenerRespuestasYValores/${id_actividad}`);
+
+                    if (response.status === 200) {
+                        const respuestas = await response.json();
+
+                        // Verificar si se encontraron respuestas
+                        if (respuestas.length > 0) {
+
+                            // Iterar sobre las respuestas en grupos de cuatro
+                            for (let i = 0; i < respuestas.length; i += 4) {
+                                const grupoRespuestas = respuestas.slice(i, i + 4);
+
+                                // Almacenar respuestas y realizar clics dependiendo del valor
+                                grupoRespuestas.forEach((respuesta, index) => {
+                                    const cuadroPregunta = document.getElementById(`cuadro${index + 1}VideoAUDIO`);
+                                    const opcionPregunta = document.getElementById(`opcionV${index + 1}Videoaudio`);
+                                    const opcionFalsa = document.getElementById(`opcionF${index + 1}Videoaudio`);
+
+                                    cuadroPregunta.value = respuesta.Respuesta || "";
+
+                                    if (respuesta.Valor === true) {
+                                        opcionPregunta.click();
+                                    } else {
+                                        opcionFalsa.click();
+                                    }
+                                });
+                            }
+                        } else {
+                            console.log("No se encontraron respuestas para este usuario.");
+                        }
+                    } else {
+                        console.log("Error al obtener las respuestas del servidor.");
+                    }
+                } else {
+                    console.log("El id de actividad es nulo.");
+                }
+            } catch (error) {
+                console.error('Error al obtener la información de las respuestas:', error);
+            }
+        }
+
+        function limpiarCampos() {
+            document.getElementById('identificador').value = "";
+            document.getElementById('identificador2').value = "";
+            document.getElementById('identificador3').value = "";
+            document.getElementById('descripcion4').value = "";
+            document.getElementById('idLeccion').value = "";
+            document.getElementById('NumeroDeActividad').value = "";
+            document.getElementById('cuadro1Pregunta').value = "";
+            document.getElementById('cuadro2Pregunta').value = "";
+            document.getElementById('cuadro3Pregunta').value = "";
+            document.getElementById('cuadro4Pregunta').value = "";
+            document.getElementById('cuadro1VideoPregunta').value = "";
+            document.getElementById('cuadro2VideoPregunta').value = "";
+            document.getElementById('cuadro3VideoPregunta').value = "";
+            document.getElementById('cuadro4VideoPregunta').value = "";
+            //--------------------------------------------------------
+            document.getElementById('cuadro1VideoAUDIO').value = "";
+            document.getElementById('cuadro2VideoAUDIO').value = "";
+            document.getElementById('cuadro3VideoAUDIO').value = "";
+            document.getElementById('cuadro4VideoAUDIO').value = "";
+        }
+
+        function seleccionarTipoDeActividad() {
+            var tipoDeActividad = document.getElementById("TipoDeActividad").value;
+            var selectedUserId = null;
+
+            // Eliminar event listeners previos antes de agregar uno nuevo
+            document.getElementById('id_actividad').removeEventListener('input', obtenerRespuestasYValores);
+            document.getElementById('id_actividad').removeEventListener('input', obtenerRespuestasYValoresVideo);
+            document.getElementById('id_actividad').removeEventListener('input', obtenerRespuestasYValoresAudio);
+
+            if (tipoDeActividad === "pregunta") {
+                // Agregar el event listener para obtener respuestas y valores
+                document.getElementById('id_actividad').addEventListener('input', function () {
+                    selectedUserId = this.value;
+                    obtenerRespuestasYValores(selectedUserId);
+                });
+            } else if (tipoDeActividad === "seleccion_palabras_video") {
+                // Agregar el event listener para obtener respuestas y valores de video
+                document.getElementById('id_actividad').addEventListener('input', function () {
+                    selectedUserId = this.value;
+                    obtenerRespuestasYValoresVideo(selectedUserId);
+                });
+            } else if (tipoDeActividad === 'seleccion_palabras_audio') {
+                document.getElementById('id_actividad').addEventListener('input', function () {
+                    selectedUserId = this.value;
+                    obtenerRespuestasYValoresAudio(selectedUserId);
+                });
+            }
+        }
+
+
+        document.getElementById('id_actividad').addEventListener('input', obtenerRespuestasYValores);
+
+    </script>
+</body>
+
+</html>
+``

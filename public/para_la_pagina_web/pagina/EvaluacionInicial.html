@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIDACI LETRAS</title>
+    <link rel="stylesheet" href="EvaluacionInicial.css">
+    <link rel="icon" href="DIDACTILETRAS.png" type="image/png">
+
+</head>
+
+<body>
+    <div class="header">
+        <h1>Evaluacion</h1>
+        <h1>Inicial</h1>
+        <h1>&nbsp;</h1>
+    </div>
+    <div class="container">
+        <div class="content">
+            <h3>Ingresa al link del cuestionario de Google para empezar tu evaluación inicial.</h3>
+        </div>
+    </div>
+    <div class="container" id="usuarioContainer">
+        <div class="content">
+            <!-- Este div se actualizará con el correo del usuario -->
+        </div>
+    </div>
+
+    <div class="CuadroParaLink" id="mensaje">
+    </div>
+
+    <div class="encimaDelCuadro">
+        <h2>Link del googleForms:</h2>
+    </div>
+
+    <!-- Capa de superposición -->
+    <div id="overlay" class="overlay"></div>
+
+    <!-- Cuadro de mensaje de espera -->
+    <div id="mensajeEspera" class="mensaje-espera">
+        Espera que docente califique el examen
+        <p>regresa a la pantalla anterior</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const usuario = localStorage.getItem('usuario');
+            const usuarioContainer = document.getElementById('usuarioContainer');
+            console.log(usuario);
+            if (usuario) {
+                usuarioContainer.innerHTML = `<h3>Y recuerda poner tu correo: "${usuario}"</h3>
+                <p>(para que se pueda insertar tu calificación inicial)</p>`;
+            } else {
+                usuarioContainer.innerHTML = `<h3> Sin datos :C</h3>`;
+            }
+        });
+
+        let urlFormulario;
+        
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const cuadroParaLink = document.getElementById('mensaje');
+            const overlay = document.getElementById('overlay');
+            const mensajeEspera = document.getElementById('mensajeEspera');
+
+            // Agregar un manejador de eventos de clic al div
+            cuadroParaLink.addEventListener('click', () => {
+                // Mostrar el overlay y el mensaje de espera con animación
+                overlay.classList.add('visible');
+                mensajeEspera.classList.add('visible');
+
+                // Abrir el formulario en una nueva pestaña después de un breve retraso
+                setTimeout(() => {
+                    window.open(urlFormulario, '_blank');
+                }, 500);
+            });
+        });
+    </script>
+
+
+
+
+    <script>
+        async function obtenerLinkEvaluacionInicial() {
+            try {
+                const response = await fetch('/evaluacion-inicial');
+                const data = await response.json();
+                const linkForms = data.Link_forms;
+                const mensajeDiv = document.getElementById('mensaje');
+                urlFormulario=data.Link_forms;
+                mensajeDiv.innerHTML = `<a href="${linkForms}">${linkForms}</a>`;
+            } catch (error) {
+                console.error('Error al obtener los datos:', error);
+            }
+        }
+
+        // Llamar a la función cuando la página se cargue
+        window.onload = obtenerLinkEvaluacionInicial;
+
+
+    </script>
+</body>
+
+</html>

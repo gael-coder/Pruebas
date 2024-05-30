@@ -1,0 +1,86 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom right, #C8A2C8, #8A2BE2); /* Degradado de #C8A2C8 a #8A2BE2 */
+    height: 100vh; /* Asegura que el degradado cubra toda la altura de la ventana */
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    margin-top: 50px;
+    font-family: cursive, sans-serif;
+
+    
+}
+.input-box, .select-box, .textarea-box {
+    margin-bottom: 20px;
+    
+}
+.input-box label, .select-box label, .textarea-box label {
+    display: block;
+    margin-bottom: 5px;
+    font-family: cursive, sans-serif;
+
+}
+input[type="text"], textarea, select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+        font-family: cursive, sans-serif;
+
+}
+
+.acciones {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 150px;
+    padding:  20px;
+}
+
+.accion {
+    flex-grow: 1;
+    text-align: center;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: cursive, sans-serif;
+    
+    cursor: pointer;
+    
+}
+
+.accion p {
+    margin: 0;
+    font-size: 28px;
+    
+}
+
+.imagen-esquina {
+    position: absolute; /* Posicionamiento fijo para mantener la imagen en la ventana incluso al hacer scroll */
+    top: 20px; /* Ajusta la posición desde arriba según sea necesario */
+    right: 40px; /* Ajusta la posición desde la derecha según sea necesario */
+    width: 150px; /* Ajusta el ancho según sea necesario */
+    height: auto; /* Mantén la proporción de la imagen */
+    background-size: cover; /* Ajusta el tamaño de la imagen */
+    cursor: pointer; /* Cambia el cursor al pasar sobre la imagen */
+}
+
+.titulo  {
+    position: absolute;
+    top: 10px;
+    left: 875px;
+    font-family: cursive, sans-serif;
+    font-size: 23px;
+}

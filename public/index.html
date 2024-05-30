@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>DIDACTI LETRAS</title>
+    <link rel="stylesheet" type="text/css" href="Style.css" media="screen" />
+    <meta charset="UTF-8">
+    <link rel="icon" href="para_la_pagina_web/pagina/DIDACTILETRAS.png" type="image/png">
+
+</head>
+
+<body class="fondo">
+    <h1 class="tittle">INICIAR SESIÓN
+        <!-- <button style="background-color: #2BE1E1; border-radius: 52%;">
+            <img src="volumen.png" width="30px" style="float: right;">
+        </button> -->
+        <img src="logo.jpeg" width="90px"
+            style="border-radius: 22px; position:inherit; margin-right: 9px; position: relative;">
+    </h1>
+    <div class="pg1">
+
+
+        <form id="login">
+            <label for="usern" class="lb1">Correo:
+                <!-- <button style="background-color: #2BE1E1; border-radius: 50%;">
+                    <img src="volumen.png" width="30px" style="border-radius: 22px; position:inherit;">
+                </button> -->
+            </label> <br>
+            <input type="text" name="usern" id="usern" size="40"> <br> <br>
+            <label for="passn" class="lb1"> Contraseña:
+                <!-- <button style="background-color: #2BE1E1; border-radius: 50%;">
+                    <img src="volumen.png" width="30px" style="border-radius: 22px;">
+                </button> -->
+            </label> <br>
+            <input type="password" name="passn" id="passn" size="40"> <br> <br>
+            <script src="connection.js"></script>
+            <button type="button" class="btn1" onclick="iniciarSesion()">INICIAR SESIÓN</button>
+            <button class="btn1"> <a href="crearCuenta.html">CREAR CUENTA</a></button>
+        </form>
+
+    </div>
+    <script src="connection.js"></script>
+
+
+    <script>
+        async function iniciarSesion() {
+            const usuario = document.getElementById('usern').value;
+            const contraseña = document.getElementById('passn').value;
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ usuario, contraseña })
+                });
+                ///../para_la_pagina_web/pagina/PantallaInicial.html
+                const data = await response.json();
+                if (data.success) {
+                    alert('Inicio de sesión exitoso');
+                    if (data.role === 'usuario') {
+                        localStorage.setItem('usuario', usuario);
+                        localStorage.setItem('rol', data.role);
+
+                        window.location.href = '../para_la_pagina_web/pagina/PantallaInicial.html';
+                    } else if (data.role === 'docente') {
+                        localStorage.setItem('docente', usuario);
+                        localStorage.setItem('rol', data.role);
+
+                        window.location.href = 'para_la_pagina_web/pagina/Pagina docentes/PantallaDocentes.html';
+                    } else if (data.role === 'administrador') {
+                        localStorage.setItem('docente', usuario);
+                        localStorage.setItem('rol', data.role);
+
+                        window.location.href = 'para_la_pagina_web/pagina/Pagina docentes/PantallaDocentes.html';
+                    } else {
+                        alert('Error: No se encontró un rol asignado');
+                    }
+                } else {
+                    alert('Error: ' + data.message);
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        async function verificarEstadoDB() {
+            try {
+                const response = await fetch('/estadoDB'); // Llamada al endpoint '/estadoDB'
+                const data = await response.json(); // Parsea la respuesta JSON
+                // Muestra el mensaje de la respuesta en un alert
+                alert(data.message);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al intentar verificar el estado de la base de datos');
+            }
+        }
+    </script>
+
+</body>
+
+</html>

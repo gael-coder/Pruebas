@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIDACTI LETRAS</title>
+    <link rel="stylesheet" href="AgregarLeccion.css">
+    <link rel="icon" href="../DIDACTILETRAS.png" type="image/png">
+</head>
+
+<body>
+
+
+    <div class="container">
+
+        <div class="select-box">
+            <label for="numeroID">Numero de las lecciones:</label>
+            <input type="text" id="numeroIDInput" list="numerosID" onchange="obtenerInfoLeccion(this.value)"
+                placeholder="Escribe el número de la leccion aquí">
+            <datalist id="numerosID">
+
+            </datalist>
+        </div>
+
+        <div class="textarea-box">
+            <label for="mensaje">Descripcion:</label>
+            <textarea form="Descripcion" id="Descripcion" name="mensaje" rows="5"
+                placeholder="Escribe tu mensaje aquí"></textarea>
+        </div>
+    </div>
+
+
+
+    <div class="acciones">
+        <div class="accion" id="crearBoton" onclick="crearLeccion()">
+            <p>Crear/Reactivar</p>
+        </div>
+        <div class="accion" id="modificarBoton" onclick="ModificarLeccion()">
+            <p>Modificar</p>
+        </div>
+        <div class="accion" id="borrarBoton" onclick="BorrarLeccion()">
+            <p>Borrar/Desactivar</p>
+        </div>
+        <div class="titulo">
+            Agregar nueva lección
+        </div>
+    </div>
+
+    <script src="AgregarLeccion.js"></script>
+
+    <script>
+        document.getElementById('numeroIDInput').addEventListener('input', function (event) {
+            const regex = /[^0-9]/g;
+            event.target.value = event.target.value.replace(regex, '');
+        });
+
+    </script>
+
+    <script>
+        async function crearLeccion() {
+            const numeroIDInput = document.getElementById('numeroIDInput');
+            const descripcion = document.getElementById('Descripcion');
+
+            try {
+                const response = await fetch("/registroLeccion", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        descripcion: descripcion.value,
+                        numeroIDInput: numeroIDInput.value
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    if (data.message.startsWith('Se reactivó la lección')) {
+                        alert(data.message);
+                    } else {
+                        alert('Leccion creada correctamente');
+                    }
+                    location.reload();
+                } else {
+                    alert('Error al crear la Leccion: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al crear la leccion por 2');
+            }
+        }
+
+        async function ModificarLeccion() {
+            const descripcion = document.getElementById('Descripcion');
+            const numeroIDInput = document.getElementById('numeroIDInput');
+
+            try {
+                const response = await fetch("/modificarLeccion", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        descripcion: descripcion.value,
+                        numeroIDInput: numeroIDInput.value
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('Leccion Modificada correctamente');
+                    location.reload();
+                } else {
+                    alert('Error al modificar la Leccion: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al modificar la leccion por 2');
+            }
+        }
+
+
+        async function BorrarLeccion() {
+            const numeroIDInput = document.getElementById('numeroIDInput');
+
+            try {
+                const response = await fetch("/borrarLeccion", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ numeroIDInput: numeroIDInput.value })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('Leccion Borrada correctamente');
+                    location.reload();
+                } else {
+                    alert('Error al Borrar la Leccion: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al Borrar la leccion por 2');
+            }
+        }
+
+        async function actualizarIDLecciones() {
+            try {
+                const response = await fetch('/actualizarIDLecciones');
+                const LeccionID = await response.json();
+
+                const dataList = document.getElementById('numerosID');
+                dataList.innerHTML = ''; // Limpiar opciones actuales
+
+                // Iterar sobre las Lecciones y agregar opciones al datalist
+                LeccionID.forEach(Leccion => {
+                    const option = document.createElement('option');
+                    option.value = Leccion.numero_leccion;
+                    if (Leccion.validar === false) {
+                        option.textContent = 'Numero de las lecciones desactivadas';
+                    } else {
+                        option.textContent = 'Numero de las lecciones activadas';
+                    }
+                    dataList.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error al obtener los datos de la leccion:', error);
+            }
+        }
+
+
+        // Llamar a la función para actualizar los IDs cuando se cargue la página
+        window.addEventListener('DOMContentLoaded', actualizarIDLecciones);
+
+        // Event listener para detectar cambios en el input
+        document.getElementById('numeroIDInput').addEventListener('change', function () {
+            const selectedUserId = this.value;
+            obtenerInfoUsuario(selectedUserId);
+        });
+
+        // Función para manejar el cambio en el input
+        function mostrarOtro() {
+            const selectedUserId = document.getElementById('numeroIDInput').value;
+            obtenerInfoUsuario(selectedUserId);
+        }
+
+        // Función para obtener información del usuario
+        function obtenerInfoUsuario(idUsuario) {
+            // Aquí puedes escribir la lógica para obtener información del usuario basada en el ID seleccionado
+            console.log('ID de usuario seleccionado:', idUsuario);
+        }
+
+    </script>
+
+    <script>
+        async function obtenerInfoLeccion(numeroIDInput) {
+            // const ID_usuario = document.getElementById('ID_usuario').value;
+
+            try {
+                // Verificar si idUsuario es null antes de hacer la solicitud
+                if (numeroIDInput !== null) {
+                    const response = await fetch(`/obtenerLeccion/${numeroIDInput}`);
+                    if (response.status === 200) {
+                        const usuario = await response.json();
+                        // Rellena los campos con la información del usuario
+                        document.getElementById('Descripcion').value = usuario.descripcion || "";
+                    } else {
+                        // Si no se encontró la lección, limpiar los campos
+                        document.getElementById('Descripcion').value = '';
+                    }
+                } else {
+                    // Si numeroIDInput es null, limpiar los campos
+                    document.getElementById('Descripcion').value = '';
+                }
+
+            } catch (error) {
+                console.error('Error al obtener el usuario:', error);
+            }
+
+        }
+
+        document.getElementById('numeroIDInput').addEventListener('input', function () {
+            const selectedUserId = this.value;
+            obtenerInfoLeccion(selectedUserId);
+
+        });
+
+    </script>
+
+</body>
+
+</html>

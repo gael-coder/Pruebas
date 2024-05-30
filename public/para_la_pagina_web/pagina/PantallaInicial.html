@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Página Web</title>
+    <link rel="stylesheet" href="styles2.css">
+    <link rel="icon" href="DIDACTILETRAS.png" type="image/png">
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="small-box" id="smallBox">
+            <h2 style="line-height: 1.5em;">Realizar evaluación <br> inicial?</h2>
+        </div>
+        <a href="paginaPrincipal.html"> <!-- Agregamos el enlace aquí -->
+            <div class="large-box">
+                <h2>LECCIONES</h2>
+            </div>
+        </a>
+        <a href="comentario.html">
+            <div class="medium-box">
+                <h2>COMENTARIOS</h2>
+            </div>
+        </a>
+    </div>
+    <a href="configuracion.html">
+        <img src="engranaje.png" class="engranaje-esquina" style="width: 150">
+    </a>
+    <img src="DIDACTILETRAS.png" class="imagen-esquina" style="width: 300px">
+
+    <div class="overlay" id="overlay">
+        <div class="popup">
+            <h2>Realizar evaluación inicial?</h2>
+            <button onclick="redirectToAnotherPage()">Aceptar</button>
+            <button onclick="closePopup()">Regresar</button>
+            
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const usuario = localStorage.getItem('usuario');
+            console.log(usuario);
+        });
+        
+    </script>
+</body>
+
+</html>

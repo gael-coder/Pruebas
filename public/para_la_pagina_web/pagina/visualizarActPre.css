@@ -1,0 +1,251 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom right, #d8a8ff, #ff8acb);
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    font-family: cursive, sans-serif;
+    font-size: 25px;
+}
+#descripcion2 {
+    width: 100%;
+    background-color: white; /* Fondo blanco */
+    border: 1px solid #ccc; /* Borde sólido de color gris */
+    border-radius: 8px; /* Bordes redondeados */
+    padding: 10px; /* Añadir un espacio interno alrededor del contenido */
+}
+
+.container {
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"] {
+    width: calc(100% - 100px);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#identificadorDiv {
+    position: absolute;
+    left: 50px;
+    top: 60px;
+    width: calc(50% - 100px);
+    z-index: 1;
+}
+
+/* MODIFICA VISUALIZARACTVID */
+#identificadorDivV {
+    position: absolute;
+    left: 50px;
+    top: 60px;
+    width: calc(50% - 100px);
+    z-index: 1;
+}
+
+/* MODIFICA VISUALIZARACTPRE */
+#identificador,
+#identificadorDiv textarea {
+    width: 23cm;
+    /* Ajustado a 23cm de ancho de los rectangulos de respuestas */
+    height: 2cm;
+    /* Ajustado a 3cm de alto */
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    resize: none;
+    font-size: 18px;
+    position: relative;
+    margin-top: 20px;
+}
+
+/* MODIFICA VISUALIZARACTVID */
+#identificadorV,
+#identificadorDivV textarea,
+#identificadorDivV button {
+    width: 23cm;
+    /* Ajustado a 23cm de ancho */
+    height: 1cm;
+    /* Ajustado a 3cm de alto */
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    resize: none;
+    font-size: 18px;
+    position: relative;
+    margin-top: 20px;
+}
+
+#identificadorDiv label {
+    position: absolute;
+    top: -35px;
+    left: -250px;
+    width: calc(100% - 16px);
+    padding-left: 8px;
+    font-size: 22px;
+    margin-left: 0;
+}
+
+
+
+textarea {
+    width: calc(100% - 106px);
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    text-align: left;
+    box-sizing: border-box;
+    resize: none;
+    height: 150px;
+    /* Ajustamos la altura */
+    pointer-events: none;
+    /* Esto hace que el textarea no sea editable */
+    font-family: cursive, sans-serif;
+    font-size: 20px;
+}
+
+textarea::placeholder {
+    text-align: left;
+}
+
+.cuadro {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    /* Espacio entre el contenedor de video y los cuadros */
+    margin-bottom: 0px;
+    /* Espacio entre cada cuadro */
+}
+
+.cuadro:not(:last-child) {
+    margin-bottom: -0.7cm;
+    /* distancia entre los rectangulos de respuesta*/
+}
+
+#contenedorVideo {
+    grid-row: 1;
+    position: relative;
+    /* Para centrar en relación con la ventana */
+
+}
+
+#videoPlayer {
+    width: 50%;
+    height: auto;
+}
+
+.opciones {
+    display: flex;
+}
+
+.opcion {
+    background-color: grey;
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.opcion-texto {
+    color: white;
+    font-weight: bold;
+}
+
+.opcion-activa {
+    background-color: green;
+    /* Cambia el color de fondo a verde cuando está activo */
+}
+
+.imagen-esquina {
+    position: fixed;
+    /* Posicionamiento fijo para mantener la imagen en la ventana incluso al hacer scroll */
+    top: 800px;
+    /* Ajusta la posición desde arriba según sea necesario */
+    right: 40px;
+    /* Ajusta la posición desde la derecha según sea necesario */
+    width: 150px;
+    /* Ajusta el ancho según sea necesario */
+    height: auto;
+    /* Mantén la proporción de la imagen */
+    background-size: cover;
+    /* Ajusta el tamaño de la imagen */
+    cursor: pointer;
+    /* Cambia el cursor al pasar sobre la imagen */
+}
+
+.boton-continuar {
+
+    width: 5cm;
+    height: 5cm;
+    background-color: white;
+    border: none;
+    border-radius: 25px;
+    /* Esquinas redondeadas */
+    font-size: 25px;
+    color: black;
+    cursor: pointer;
+    text-align: center;
+    /* Centra el texto horizontalmente */
+    line-height: 5cm;
+    font-family: cursive, sans-serif;
+    font-size: 40px;
+    /* Ajusta el texto verticalmente al centro */
+}
+
+.container {
+    position: relative;
+}
+
+.boton-continuar-posicionado {
+    position: fixed;
+    bottom: 22px;
+    right: 20px;
+    top: 700px;
+
+}
+
+/* Estilos para los botones de reproducción */
+.custom-button,
+#identificadorDiv button {
+    background-color: #8c6ba8;
+    border: none;
+    color: white;
+    width: 2cm;
+    height: 1cm;
+    /* Modifica el tamaño aquí */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 2px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+
+#volumeSlider {
+    display: none; /* Oculta la barra de volumen por defecto */
+}
+
+#volumeSlider.visible {
+    display: block; /* Muestra la barra de volumen cuando se hace clic en ella */
+}

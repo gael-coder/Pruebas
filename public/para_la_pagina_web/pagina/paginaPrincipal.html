@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIDACTI LETRAS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="DIDACTILETRAS.png" type="image/png">
+
+</head>
+
+<body>
+    <a href="configuracion.html">
+        <img src="engranaje.png" style="width: 150">
+    </a>
+
+
+
+    <div id="pestañas-container"></div>
+
+    <!-- Contenedor donde se cargarán los menús -->
+    <div id="menus-container"></div>
+
+    <div class="container">
+        <div class="cuadrado">
+            EVALUACIÓN FINAL
+            <i class="fas fa-lock"></i>
+        </div>
+    </div>
+
+    <div class="container2">
+        <div class="cuadrado2">
+            RECONOCIMIENTO
+            <i class="fas fa-lock"></i>
+        </div>
+    </div>
+
+
+
+
+    <!----------------------------------------------------------------------------------------->
+    <script>
+        // Función para realizar la solicitud al servidor y cargar las lecciones
+        async function cargarLecciones() {
+            try {
+                const response = await fetch('/leccion');
+                const lecciones = await response.json();
+
+                // Contenedor de las pestañas
+                const pestañasContainer = document.getElementById('pestañas-container');
+
+                // Iterar sobre las lecciones obtenidas y crear las pestañas y menús
+                for (const leccion of lecciones) {
+                    if (leccion.validar) { // Verificar si la lección está validada (validar = true)
+                        // Crear pestaña
+                        const pestaña = document.createElement('div');
+                        pestaña.className = 'pestaña';
+                        pestaña.innerHTML = `<span class="leccion">Lección ${leccion.numero_leccion} </span>`;
+                        pestaña.onclick = () => toggleMenu(`menu${leccion.numero_leccion}`);
+                        pestaña.addEventListener('mouseover', () => mostrarDescripcion(leccion.descripcion));
+                        pestaña.addEventListener('mouseout', () => ocultarDescripcion());
+                        pestañasContainer.appendChild(pestaña);
+
+                        // Obtener las actividades de la lección
+                        const actividadesResponse = await fetch(`/actividades/${leccion.idLeccion}`);
+                        const actividades = await actividadesResponse.json();
+
+                        //obtener las evaluaciones Parciales de la leccion
+                        const response = await fetch(`/evaluacionparcial/${leccion.idLeccion}`);
+                        const evaluacionParcial = await response.json();
+
+                        // Crear contenedor de menú
+                        const menuContainer = document.createElement('div');
+                        menuContainer.id = `menu-container${leccion.numero_leccion}`;
+                        pestañasContainer.appendChild(menuContainer);
+
+                        // Crear menú
+                        const menu = document.createElement('div');
+                        menu.id = `menu${leccion.numero_leccion}`;
+                        menu.className = 'menu';
+                        menu.style.display = 'none';
+
+                        // Construir los elementos del menú con las actividades si existen
+                        // Construir los elementos del menú con las actividades si existen
+                        let menuHTML = '<ul>';
+                        if (actividades.length > 0) {
+                            actividades.forEach((actividad, index) => {
+                                // Agregar el ID de la actividad a la URL
+                                if (actividad.Tipo_actividad === 'pregunta') {
+                                    const url = `TIPOActividad1.html?id=${actividad.idActividad}`;
+
+                                    // Agregar la actividad al menú con el enlace que contiene el ID en la URL
+                                    menuHTML += `<li><a href="${url}">ACTIVIDAD pregunta ${actividad.numeroDeActividad}</a></li>`;
+                                } else if (actividad.Tipo_actividad === 'seleccion_palabras_video') {
+                                    const url = `visualizarActVid.html?id=${actividad.idActividad}`;
+
+                                    // Agregar la actividad al menú con el enlace que contiene el ID en la URL
+                                    menuHTML += `<li><a href="${url}">ACTIVIDAD con video ${actividad.numeroDeActividad}</a></li>`;
+                                } else if (actividad.Tipo_actividad === 'seleccion_palabras_audio') {
+                                    const url = `visualizarActAud.html?id=${actividad.idActividad}`;
+
+                                    // Agregar la actividad al menú con el enlace que contiene el ID en la URL
+                                    menuHTML += `<li><a href="${url}">ACTIVIDAD con audio ${actividad.numeroDeActividad}</a></li>`;
+                                } else if (actividad.Tipo_actividad === 'contenido_audiovisual') {
+                                    const url = `visualizarMaterial.html?id=${actividad.idActividad}`;
+
+                                    // Agregar la actividad al menú con el enlace que contiene el ID en la URL
+                                    menuHTML += `<li><a href="${url}">MATERIAL AUDIOVISUAL ${actividad.numeroDeActividad}</a></li>`;
+                                }
+
+
+                            });
+                        } else {
+                            menuHTML += '<li><a>No hay actividades</a></li>';
+                        }
+
+
+                        if (evaluacionParcial.length > 0) {
+                            evaluacionParcial.forEach((evaluacionParcial, index) => {
+                                // Agregar el ID de la evaluación parcial a la URL
+                                const url = `EvaluacionPArcia.html?id=${evaluacionParcial.idevaluacionParcial}`;
+
+                                // Agregar la evaluación parcial al menú con el enlace que contiene el ID en la URL
+                                menuHTML += `<li><a href="${url}">evaluacionParcial ${evaluacionParcial.numero_evaluacionParcial}</a></li>`;
+                            });
+                        } else {
+                            menuHTML += '<li><a href="#">No hay evaluacion Parciales</a></li>';
+                        }
+
+                        menuHTML += '</ul>';
+                        menu.innerHTML = menuHTML;
+
+                        menuContainer.appendChild(menu);
+
+                    }
+                }
+            } catch (error) {
+                console.error('Error al cargar las lecciones:', error.message);
+            }
+        }
+
+        // Llamar a la función para cargar las lecciones cuando la página cargue
+        window.onload = cargarLecciones;
+
+
+        // Llamar a la función para cargar las lecciones cuando la página cargue
+        window.onload = cargarLecciones;
+
+
+        // Función para mostrar la descripción cuando el mouse está encima de la pestaña
+        function mostrarDescripcion(descripcion) {
+            const descripcionContainer = document.getElementById('descripcion-container');
+            if (!descripcionContainer) {
+                const newDescripcionContainer = document.createElement('div');
+                newDescripcionContainer.id = 'descripcion-container';
+                newDescripcionContainer.innerHTML = `<p><strong>DESCRIPCIÓN:</strong></p> <p>${descripcion}</p>`;
+                document.body.appendChild(newDescripcionContainer);
+            }
+        }
+
+        // Función para ocultar la descripción cuando el mouse sale de la pestaña
+        function ocultarDescripcion() {
+            const descripcionContainer = document.getElementById('descripcion-container');
+            if (descripcionContainer) {
+                descripcionContainer.remove();
+            }
+        }
+
+        // Función para mostrar u ocultar un menú
+        function toggleMenu(menuId) {
+            var menu = document.getElementById(menuId);
+            if (menu.style.display === "block") {
+                menu.style.display = "none";
+            } else {
+                menu.style.display = "block";
+            }
+        }
+
+        // Llamar a la función para cargar las lecciones cuando la página cargue
+        window.onload = cargarLecciones;
+
+
+
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            let usuario = localStorage.getItem('usuario');
+            let rol = localStorage.getItem('rol');
+            console.log(rol);
+            console.log(usuario);
+            
+
+            if (usuario) {
+                try {
+                    let response = await fetch(`/calificacion?correo=${encodeURIComponent(usuario)}`);
+                    if (response.ok) {
+                        let data = await response.json();
+                        if (data.length > 0) {
+                            const calificacion = data[0].calificacion;
+                            localStorage.setItem('calificacion', calificacion);
+                            console.log(calificacion);
+
+                            // Desbloquear el div si la calificación es mayor a 70
+                            if (calificacion >= 70) {
+                                const evaluacionDiv = document.querySelector('.cuadrado');
+                                evaluacionDiv.classList.add('desbloqueado');
+                                evaluacionDiv.innerHTML = `
+                            <div>
+                                <h2>EVALUACIÓN FINAL</h2>
+                                <i class="fas fa-unlock"></i>
+                                <p class="mensaje">Pasaste la evaluación inicial con calificacion de ${calificacion}</p>
+                                <a href="evaluacionFinal.html" class="redireccion">Ir a la evaluación final</a>
+                            </div>
+                        `;
+                            }
+                        } else {
+                            console.log('No se encontraron calificaciones');
+                        }
+                    } else {
+                        console.error('Error en la respuesta del servidor');
+                    }
+                } catch (error) {
+                    console.error('Error al obtener la calificación:', error);
+                }
+
+                try {
+                    let response = await fetch(`/calificacionFinal?correo=${encodeURIComponent(usuario)}`);
+                    if (response.ok) {
+                        let data = await response.json();
+                        if (data.length > 0) {
+                            const calificacionFinal = data[0].calificacion;
+                            localStorage.setItem('calificacionFinal', calificacionFinal);
+                            console.log(calificacionFinal);
+
+                            // Desbloquear el div si la calificación es mayor o igual a 70
+                            if (calificacionFinal >= 70) {
+                                const reconocimientoDiv = document.querySelector('.cuadrado2');
+                                reconocimientoDiv.classList.add('desbloqueado');
+                                reconocimientoDiv.innerHTML = `
+                            <div>
+                                <h2>RECONOCIMIENTO</h2>
+                                <i class="fas fa-unlock"></i>
+                                <p class="mensaje">Pasaste la evaluación Final con calificacion de ${calificacionFinal}</p>
+                                <a href="Reconocimiento.html" class="redireccion">Visualizar</a>
+                            </div>
+                        `;
+                            }
+                        } else {
+                            console.log('No se encontraron calificaciones');
+                        }
+                    } else {
+                        console.error('Error en la respuesta del servidor');
+                    }
+                } catch (error) {
+                    console.error('Error al obtener la calificación:', error);
+                }
+            } else {
+                console.error('Usuario no encontrado en localStorage');
+            }
+        });
+
+    </script>   
+
+
+</body>
+
+</html>

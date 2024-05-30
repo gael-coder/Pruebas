@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIDACTI LETRAS</title>
+    <link rel="stylesheet" href="PantallaDocentes.css">
+    <link rel="icon" href="../DIDACTILETRAS.png" type="image/png">
+</head>
+
+<body>
+    <div class="acomodar">
+        <div class="container">
+            <a href="EvaluacionParcial.html">
+                <div class="box">
+                    <h1>Agregar</h1>
+                    <h1>Evaluacion parcial</h1>
+                </div>
+            </a>
+            <a href="Configuracion docente.html">
+                <div class="box2">
+                    <h1>Agregar</h1>
+                    <h1>Docentes</h1>
+                </div>
+            </a>
+            <a href="AgregarLeccion.html">
+                <div class="box3">
+                    <h1>Agregar</h1>
+                    <h1>Leccion</h1>
+                </div>
+            </a>
+            <a href="../Actividades/Agregar_actividad.html">
+                <div class="box4">
+                    <h1>Agregar</h1>
+                    <h1>Actividad</h1>
+                </div>
+            </a>
+            <a href="../calificaciones/Calificaciones.html">
+                <div class="box5">
+                    <h1>Tabla Usuario</h1>
+                    <h1>Calificacion</h1>
+                </div>
+            </a>
+            <a href="EvaluacionFinalYInicial.html">
+                <div class="box6">
+                    <h1>Agregar</h1>
+                    <h1>Inicial y Final</h1>
+                </div>
+            </a>
+            <img src="DIDACTILETRAS.png" class="Imagen">
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            let usuario = localStorage.getItem('docente');
+            console.log(usuario);
+            let rol = localStorage.getItem('rol');
+            console.log(rol);
+            try {
+                let response = await fetch(`/rol?correo=${encodeURIComponent(usuario)}`);
+                if (response.ok) {
+                    let data = await response.json();
+                    if (data.success) {
+                        console.log(`El rol del usuario con correo ${usuario} es: ${data.rol}`);
+                    } else {
+                        console.log('No se encontró el rol');
+                    }
+                } else {
+                    console.error('Error en la respuesta del servidor');
+                }
+            } catch (error) {
+                console.error('Error al obtener el rol:', error);
+            }
+        });
+
+
+
+
+
+    </script>
+</body>
+
+</html>

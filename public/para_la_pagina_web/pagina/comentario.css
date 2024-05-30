@@ -1,0 +1,99 @@
+/* CSS Document */
+
+body {
+    background-color: #FFFFE0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#texto {
+    width: 100%;
+    max-width: 700px;
+    padding: 50px;
+    border: 0px solid black;
+    border-radius: 20px;
+    background-color: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    font-size: 18px; /* Tamaño de fuente inicial */
+    line-height: 1.2; /* Altura de línea */
+    overflow-y: auto; /* Agrega barras de desplazamiento vertical si el contenido es demasiado grande */
+	max-height: 200px;
+}
+.Titulo{
+	position: absolute;
+	top: 100px;
+	font-family: cursive, sans-serif;
+    font-size: 40px;
+	font-weight: bold;
+	
+}
+
+#enviar {
+    background-color: #FF5733;
+    color: white;
+    padding: 40px 90px;
+    border: none;
+    border-radius: 20px;
+    font-size: 50px;
+    cursor: pointer;
+   position: absolute;
+	top: 600px;
+		font-family: cursive, sans-serif;
+font-weight: bold;
+}
+
+
+.modal {
+    display: none; /* Ocultar por defecto */
+    position: absolute; /* Posición fija */
+    z-index: 1; /* Encima de todo */
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5); /* Fondo semitransparente */
+}
+
+.modal-content {
+    background-color: white;
+    margin: 25% auto; /* Centrado verticalmente */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%; /* Ancho del cuadro */
+    height: 250px; /* Altura del cuadro */    
+	text-align: center;
+    border-radius: 10px;
+	font-family: cursive, sans-serif;
+font-weight: bold;
+	  font-size: 40px;
+	
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.puntero{
+	cursor: pointer;
+}
+.imagen-esquina {
+    position: fixed; /* Posicionamiento fijo para mantener la imagen en la ventana incluso al hacer scroll */
+    top: 20px; /* Ajusta la posición desde arriba según sea necesario */
+    right: 40px; /* Ajusta la posición desde la derecha según sea necesario */
+    width: 150px; /* Ajusta el ancho según sea necesario */
+    height: auto; /* Mantén la proporción de la imagen */
+    background-size: cover; /* Ajusta el tamaño de la imagen */
+    cursor: pointer; /* Cambia el cursor al pasar sobre la imagen */
+}

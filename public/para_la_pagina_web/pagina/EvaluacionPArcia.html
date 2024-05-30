@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIDACI LETRAS</title>
+    <link rel="stylesheet" href="styles4.css">
+    <link rel="icon" href="DIDACTILETRAS.png" type="image/png">
+
+</head>
+
+<body>
+    <div class="header">
+        <h1>Evaluacion </h1>
+        <h1>Inicial</h1>
+        <h1>Leccion 1</h1>
+    </div>
+   
+    <div class="container">
+        <div class="content">
+            <h3> Ingresa al link del cuestionario de Google para empezar tu evaluación parcial.</h3>
+        </div>
+    </div>
+    <div class="container" id="usuarioContainer">
+        <div class="content">
+            <!-- Este div se actualizará con el correo del usuario -->
+        </div>
+    </div>
+    <div class="CuadroParaLink" id="mensaje">
+
+    </div>
+
+
+
+    <div class="encimaDelCuadro">
+        <h2>Link del googleForms:</h2>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const usuario = localStorage.getItem('usuario');
+            const usuarioContainer = document.getElementById('usuarioContainer');
+            console.log(usuario);
+            if (usuario) {
+                usuarioContainer.innerHTML = `<h3>Y recuerda poner tu correo: "${usuario}"</h3>
+                <p>(para que se pueda insertar tu calificación inicial)</p>`;
+            } else {
+                usuarioContainer.innerHTML = `<h3> Sin datos :C</h3>`;
+            }
+        });
+        // Obtener el ID de la evaluación parcial de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const idEvaluacionParcial = urlParams.get('id');
+
+        console.log(`ID de la evaluación parcial recuperado de la URL: ${idEvaluacionParcial}`);
+
+        // Guardar el ID de la evaluación parcial en el localStorage
+        localStorage.setItem('idEvaluacionParcial', idEvaluacionParcial);
+
+        console.log(`ID de la evaluación parcial almacenado en el localStorage: ${idEvaluacionParcial}`);
+
+        let urlFormulario; // Declaración de la variable en un ámbito más amplio
+
+        //----------------------------------------------------------------------------------------------------------
+        async function obtenerInfoEvaluacionParcial(idEvaluacionParcial) {
+            try {
+                // Verificar si idUsuario es null antes de hacer la solicitud
+                if (idEvaluacionParcial !== null) {
+                    const response = await fetch(`/obtenerInfoEvaluacionParcial/${idEvaluacionParcial}`);
+                    if (response.status === 200) {
+                        const usuario = await response.json();
+                        // Rellena los campos con la información del usuario
+                        document.getElementById('mensaje').textContent = usuario.forms || "";
+                        urlFormulario = usuario.forms;
+                    } else {
+                        // Si no se encontró la lección, limpiar los campos
+                        document.getElementById('mensaje').textContent = "";
+                    }
+                } else {
+                    // Si numeroIDInput es null, limpiar los campos
+                }
+            } catch (error) {
+                console.error('Error al obtener el usuario:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            obtenerInfoEvaluacionParcial(idEvaluacionParcial)
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const cuadroParaLink = document.getElementById('mensaje');
+
+            // Agregar un manejador de eventos de clic al div
+            cuadroParaLink.addEventListener('click', () => {
+                window.open(urlFormulario, '_blank');
+            });
+        });
+
+
+
+    </script>
+
+</body>
+
+</html>

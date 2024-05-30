@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reconocimiento de Curso Acreditado</title>
+    <link rel="stylesheet" type="text/css" href="Reconocimiento.css">
+    <link rel="icon" href="DIDACTILETRAS.png" type="image/png">
+
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>CERTIFICADO DE <br> RECONOCIMIENTO</h1>
+        <div class="acreditacion">
+            <label for="nombre">Nombre:</label><br>
+            <input type="nombre" id="nombre" class="nombre" placeholder="ID">
+
+            <hr> <!-- Línea horizontal -->
+            <p> Ha completado satisfactoriamente el curso de Didactiletras.
+                Durante el curso, ha demostrado un compromiso excepcional y ha adquirido habilidades fundamentales en el
+                proceso de lectoescritura a través del innovador enfoque de Didactiletras.
+                Este certificado se otorga como reconocimiento a su dedicación y logros en el dominio de las habilidades
+                de lectura y escritura con una calificación final de: <span id="calificacion_final"> </span>
+            </p>
+
+
+        </div>
+    </div>
+
+    <div class="evaluaciones">
+        <div class="evaluacion-inicial">
+            <label for="evaluacion_inicial">Calificación Evaluación inicial:</label>
+            <input type="text" id="evaluacion_inicial" class="cajaT2" placeholder="ID">
+        </div>
+
+
+        <div class="evaluacion-final">
+            <label for="evaluacion_final">Calificación de evaluación final:</label>
+            <input type="text" id="evaluacion_final" class="cajaT2" placeholder="ID">
+        </div>
+    </div>
+
+
+
+    <img src="DIDACTILETRAS.png" class="imagen-esquina" style="width: 300px">
+
+    <div class="contenedor">
+        <a href="PantallaInicial.html">
+            <img src="regresar-sn fondo.png" class="imagen-esquina2" style="width: 80px">
+        </a>
+    </div>
+
+    <!-- Apartado para la fecha del día -->
+    <div id="fecha"></div>
+
+
+
+
+    <script>
+        // Obtener la fecha actual
+        var fechaActual = new Date();
+
+        // Formatear la fecha como "Día de Mes de Año"
+        var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        var fechaFormateada = fechaActual.toLocaleDateString('es-ES', options);
+
+        // Mostrar la fecha en el elemento con id "fecha"
+        document.getElementById("fecha").innerHTML = "Fecha: " + fechaFormateada;
+
+
+        document.addEventListener('DOMContentLoaded', async function () {
+            let usuario = localStorage.getItem('usuario');
+            console.log(usuario);
+            let calificacionInicial = localStorage.getItem('calificacion');
+            console.log(calificacionInicial);
+            let calificacionFinal = localStorage.getItem('calificacionFinal');
+            console.log(calificacionFinal);
+
+            if (calificacionInicial !== null) {
+                // Si tiene un valor, asigna ese valor al input con id 'evaluacion_inicial'
+                document.getElementById('evaluacion_inicial').value = calificacionInicial;
+            }
+            if (calificacionFinal !== null) {
+                // Si tiene un valor, asigna ese valor al input con id 'evaluacion_inicial'
+                document.getElementById('evaluacion_final').value = calificacionFinal;
+            }
+
+            try {
+                let response = await fetch(`/datosUsuario?correo=${encodeURIComponent(usuario)}`);
+                if (response.ok) {
+                    let data = await response.json();
+                    document.getElementById('nombre').value = `${data.nombre} ${data.apellidos}`;
+                } else {
+                    console.error('Error en la respuesta del servidor');
+                }
+            } catch (error) {
+                console.error('Error al obtener los datos del usuario:', error);
+            }
+
+
+
+
+
+        });
+
+
+    </script>
+
+</body>
+
+</html>

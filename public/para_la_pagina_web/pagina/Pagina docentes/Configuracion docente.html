@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIDACTI LETRAS</title>
+    <link rel="stylesheet" href="Configuracion docente.css">
+    <link rel="icon" href="../DIDACTILETRAS.png" type="image/png">
+
+</head>
+
+<body>
+    <div class="container">
+        <h1>Asignar nuevo docente</h1>
+
+        <div class="input-group">
+            <label for="nombre">Nombre:</label>
+            <textarea class="textbox" for="nombre" id="nombre" placeholder="Escribe aquí..." maxlength="100"></textarea>
+            <!-- </div>
+        <div class="input-group"> -->
+            <label for="Apellido">Apellido:</label>
+            <textarea class="textbox" for="Apellido" id="Apellido" placeholder="Escribe aquí..."
+                maxlength="100"></textarea>
+            <!-- </div>
+
+        <div class="input-group"> -->
+            <label for="email">Correo electrónico:</label>
+            <textarea class="textbox" for="email" id="email" placeholder="Escribe aquí..." maxlength="100"></textarea>
+            <!-- </div>
+
+        <div class="input-group"> -->
+            <label for="telefono">Telefono:</label>
+            <textarea class="textbox" for="telefono" id="telefono" placeholder="Escribe aquí..."
+                maxlength="10"></textarea>
+            <!-- </div>
+
+        <div class="input-group"> -->
+            <label for="contraseña">Contraseña:</label>
+            <input type="password" class="textbox" for="password" id="password" placeholder="Escribe aquí..."
+                maxlength="100"></textarea>
+            <!-- </div>
+
+        <div class="input-group"> -->
+            <label for="confirmaContraseña">Confirmar contraseña:</label>
+            <input type="password" class="textbox" for="confirm_password" id="confirm_password"
+                placeholder="Escribe aquí..." maxlength="100"></input>
+        </div>
+
+    </div>
+
+
+    <div class="grupo2">
+        <div class="input-group">
+            <label for="ID usuario">ID usuario:</label>
+            <select class="textbox2" for="ID_usuario" id="ID_usuario" name="ID_usuario" placeholder="Escribe aquí..."
+                maxlength="100" onchange="obtenerInfoUsuario(this.value)"></select>
+        </div>
+    </div>
+
+
+
+    <div class="acciones" id="acciones">
+        <button class="accion" id="crear" onclick="crearUsuarioDocente()">CREAR</button>
+        <button class="accion" id="modificar" onclick="ModificarUSUARIO()">MODIFICAR</button>
+        <button class="accion" id="eliminar" onclick="borrarUsuarioDocente()">ELIMINAR</button>
+    </div>
+
+
+    </div>
+
+
+
+    <script>
+        document.getElementById('telefono').addEventListener('input', function (e) {
+            var value = e.target.value;
+            e.target.value = value.replace(/[^0-9]/g, '');
+        });
+
+        document.addEventListener('DOMContentLoaded', async function () {
+            let usuario = localStorage.getItem('docente');
+            console.log(usuario);
+            let rol = localStorage.getItem('rol');
+            console.log(rol);
+
+            // Ocultar o mostrar botones según el rol
+            if (rol === 'docente') {
+                // Ocultar botones
+                document.getElementById('crear').style.display = 'none';
+                document.getElementById('eliminar').style.display = 'none';
+
+            } else if (rol === 'administrador') {
+                // Mostrar botones
+                document.getElementById('crear').style.display = 'block';
+                document.getElementById('eliminar').style.display = 'block';
+            }
+        });
+
+
+
+
+
+
+
+
+        async function crearUsuarioDocente() {
+
+            const nombre = document.getElementById('nombre').value;
+            const apellido = document.getElementById('Apellido').value;
+            const email = document.getElementById('email').value;
+            const telefono = document.getElementById('telefono').value;
+            const password = document.getElementById('password').value;
+            const confirm_password = document.getElementById('confirm_password').value;
+            const ID_usuario = document.getElementById('ID_usuario').value;
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                alert('Por favor, introduce una dirección de correo electrónico válida.');
+                return; // Detiene la ejecución de la función
+            }
+
+            // Validar que el correo electrónico contenga .com
+            if (!email.includes('.com')) {
+                alert('Por favor, introduce una dirección de correo electrónico con el dominio ".com".');
+                return; // Detiene la ejecución de la función
+            }
+
+            if (password == confirm_password) {
+                try {
+                    const response = await fetch("/crearUsuarioDocente", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            nombre: nombre, apellido: apellido,
+                            email: email, telefono: telefono, password: password,
+                            confirm_password: confirm_password, ID_usuario: ID_usuario
+                        })
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        alert('Usuario creada correctamente');
+
+
+                        location.reload(); // Esta línea reinicia la página
+                    } else {
+                        alert('Error al crear la cuenta: ' + data.message);
+                        if (data.message === 'El correo ya está registrado') {
+                            document.getElementById('correo').value = '';
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error al crear la Ususario por 2');
+                }
+            } else {
+
+                alert('Error contraseña no son identicas')
+            }
+
+
+        }
+        //MODIFICACION DE USUARIOS
+        async function ModificarUSUARIO() {
+            const nombre = document.getElementById('nombre').value;
+            const apellido = document.getElementById('Apellido').value;
+            const email = document.getElementById('email').value;
+            const telefono = document.getElementById('telefono').value;
+            const password = document.getElementById('password').value;
+            const confirm_password = document.getElementById('confirm_password').value;
+            const ID_usuario = document.getElementById('ID_usuario').value;
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                alert('Por favor, introduce una dirección de correo electrónico válida.');
+                return; // Detiene la ejecución de la función
+            }
+
+            // Validar que el correo electrónico contenga .com
+            if (!email.includes('.com')) {
+                alert('Por favor, introduce una dirección de correo electrónico con el dominio ".com".');
+                return; // Detiene la ejecución de la función
+            }
+            if (password == confirm_password) {
+                try {
+                    const response = await fetch("/ModificarUsuarioDocente", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            nombre: nombre, apellido: apellido,
+                            email: email, telefono: telefono, password: password,
+                            confirm_password: confirm_password, ID_usuario: ID_usuario
+                        })
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        alert('Usuario modificado correctamente');
+                        location.reload();
+
+                    } else {
+                        alert('Error al modificar la Ususario: ' + data.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error al modifircar la Ususario por 2');
+                }
+            } else {
+
+                alert('Error contraseña no son identicas')
+            }
+        }
+
+        //eliminar usuario
+        async function borrarUsuarioDocente() {
+            const nombre = document.getElementById('nombre').value;
+            const apellido = document.getElementById('Apellido').value;
+            const email = document.getElementById('email').value;
+            const telefono = document.getElementById('telefono').value;
+            const password = document.getElementById('password').value;
+            const confirm_password = document.getElementById('confirm_password').value;
+            const ID_usuario = document.getElementById('ID_usuario').value;
+
+            if (password == confirm_password) {
+                try {
+                    const response = await fetch("/borrarUsuarioDocente", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            nombre: nombre, apellido: apellido,
+                            email: email, telefono: telefono, password: password,
+                            confirm_password: confirm_password, ID_usuario: ID_usuario
+                        })
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        alert('Usuario borrado correctamente');
+                        location.reload(); // Esta línea reinicia la página
+                    } else {
+                        alert('Error al borrar la Ususario: ' + data.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error al crear la Ususario por 2');
+                }
+            } else {
+
+                alert('Error contraseña no son identicas')
+            }
+        }
+
+        //---------------------------------------------------------------------------------
+        async function actualizarID() {
+            try {
+                const response = await fetch('/actualizarID2');
+                const usuarios = await response.json();
+
+                const select = document.getElementById('ID_usuario');
+                select.innerHTML = ''; // Limpiar opciones actuales
+
+                // Crear la opción en blanco
+                const defaultOption = document.createElement('option');
+                defaultOption.value = null;
+                defaultOption.textContent = 'Seleccionar ID';
+                select.appendChild(defaultOption);
+
+                // Iterar sobre los usuarios y agregar opciones
+                usuarios.forEach(usuario => {
+                    const option = document.createElement('option');
+                    option.value = usuario.ID_USUARIOS;
+                    option.textContent = `Numero de usuario ${usuario.ID_USUARIOS}`;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error al obtener los usuarios:', error);
+            }
+
+
+        }
+
+        // Llamar a la función para actualizar los IDs cuando se cargue la página
+        window.addEventListener('DOMContentLoaded', actualizarID);
+
+
+        async function obtenerInfoUsuario(idUsuario) {
+            // const ID_usuario = document.getElementById('ID_usuario').value;
+
+            try {
+                // Verificar si idUsuario es null antes de hacer la solicitud
+                if (ID_usuario !== null) {
+                    const response = await fetch(`/obtenerDocewnte/${idUsuario}`);
+                    const usuario = await response.json();
+
+
+                    // Rellena los campos con la información del usuario
+                    document.getElementById('nombre').value = usuario.nombre || "";
+                    document.getElementById('Apellido').value = usuario.apellidos || "";
+                    document.getElementById('email').value = usuario.correo || "";
+                    document.getElementById('telefono').value = usuario.telefono || "";
+                    document.getElementById('password').value = usuario.contrasena || "";
+                } else {
+                    // Si idUsuario es null, limpiar los campos
+                    document.getElementById('nombre').value = '';
+                    document.getElementById('Apellido').value = '';
+                    document.getElementById('email').value = '';
+                    document.getElementById('telefono').value = '';
+                    document.getElementById('password').value = '';
+                    document.getElementById('confirm_password').value = '';
+                }
+            } catch (error) {
+                console.error('Error al obtener el usuario:', error);
+            }
+
+        }
+        // Event listener para detectar cambios en el select
+        document.getElementById('ID_usuario').addEventListener('change', function () {
+            const selectedUserId = this.value;
+            obtenerInfoUsuario(selectedUserId);
+
+        });
+        ///------------------------------------------
+
+
+
+
+
+    </script>
+
+</body>
+
+</html>

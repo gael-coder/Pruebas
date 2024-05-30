@@ -1,0 +1,38 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #d8a8ff;
+    font-family: cursive, sans-serif;
+    font-size: 25px;
+}
+
+.container {
+    text-align: center;
+}
+
+.title {
+    margin-top: -100px; /* Ajusta según tu preferencia */
+}
+
+.activity-info {
+    margin-top: 20px; /* Ajusta según tu preferencia */
+}
+
+.video-container {
+    margin-top: 20px; /* Ajusta según tu preferencia */
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    resize: vertical; /* Permite redimensionar verticalmente */
+    font-size: 20px;
+    text-align: center; /* Centra el texto horizontalmente */
+
+}

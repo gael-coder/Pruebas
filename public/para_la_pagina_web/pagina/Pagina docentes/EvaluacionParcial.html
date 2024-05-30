@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIDACTI LETRAS</title>
+    <link rel="stylesheet" href="EvaluacionParcial.css">
+    <link rel="icon" href="../DIDACTILETRAS.png" type="image/png">
+
+</head>
+
+
+<body>
+    <div class="contenedor">
+        <h4 class="titulo1">Agregar nueva evaluación parcial </h4>
+        <h4 class="titulo">Link del cuestionario de google</h4>
+
+        <div class="rectangulo-texto">
+            <textarea id="mensaje" class="texto-editable" placeholder="Escribe aquí..."></textarea>
+
+        </div>
+        <div class="nueva-evaluacion">
+            <div class="rectangulo-texto">
+                <h4 class="titulo">Link de la hoja de calculo de google</h4>
+                <textarea id="nuevo-mensaje" class="texto-editable" placeholder="Escribe aquí..."></textarea>
+            </div>
+        </div>
+        
+
+        <div class="numeros">
+            <label for="numero">Numero de la leccion:</label>
+            <input type="text" id="numeroIDInput" list="idLeccion" placeholder="Escribe el número de la leccion aquí">
+            <datalist id="idLeccion">
+
+            </datalist>
+
+        </div>
+
+        <!-------------------------------------------------------------------------------------------------->
+
+        <div class="id-evaluacion">
+            <label for="id_evaluacion">Numero de la ID evaluacion:</label>
+
+
+            <input type="text" id="numeroIDInput2" list="NumeroEvaluacion"
+                onchange="obtenerInfoEvaluacionParcial(this.value)" placeholder="Escribe el número de la leccion aquí">
+            <datalist id="NumeroEvaluacion">
+
+            </datalist>
+
+        </div>
+
+
+        <div class="id-evaluacion">
+            <label for="NumeroEvaluacion2">Numero de la evaluacion:</label>
+            <div class="ordenDecuadro">
+                <textarea for="NumeroEvaluacion2" placeholder="Escribe aquí..." id="NumeroEvaluacion2"></textarea>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="acciones">
+        <button class="accion" id="crearBoton" onclick="crearEvaluacion()">
+            <p>Crear</p>
+        </button>
+        <button class="accion" id="modificarBoton" onclick="modificarEvaluacion()">
+            <p>Modificar</p>
+        </button>
+        <button class="accion" id="borrarBoton" onclick="BorrarEvaluacion()">
+            <p>Borrar</p>
+        </button>
+    </div>
+
+    <script src="EvaluacionParcial.js"></script>
+    <script>
+        document.getElementById('numeroIDInput').addEventListener('input', function (event) {
+            const regex = /[^0-9]/g;
+            event.target.value = event.target.value.replace(regex, '');
+        });
+        document.getElementById('numeroIDInput2').addEventListener('input', function (event) {
+            const regex = /[^0-9]/g;
+            event.target.value = event.target.value.replace(regex, '');
+        });
+        document.getElementById('NumeroEvaluacion2').addEventListener('input', function (event) {
+            const regex = /[^0-9]/g;
+            event.target.value = event.target.value.replace(regex, '');
+        });
+    </script>
+    <script>
+        async function crearEvaluacion() {
+            const NumeroEvaluacion2 = document.getElementById('NumeroEvaluacion2');
+            const mensaje = document.getElementById('mensaje');
+            const numeroIDInput = document.getElementById('numeroIDInput');
+            const calculo = document.getElementById('nuevo-mensaje');
+
+
+
+            try {
+                const response = await fetch("/registroEvaluacion", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        NumeroEvaluacion2: NumeroEvaluacion2.value,
+                        mensaje: mensaje.value, numeroIDInput: numeroIDInput.value,
+                        calculo:calculo.value
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('Evaluacion parcial creada correctamente');
+                    location.reload(); // Esta línea reinicia la página
+                } else {
+                    alert('Error al crear la Evaluacion: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al crear la Evaluacion por 2');
+            }
+        }
+
+        async function modificarEvaluacion() {
+            const NumeroEvaluacion2 = document.getElementById('NumeroEvaluacion2');
+            const mensaje = document.getElementById('mensaje');
+            const numeroIDInput = document.getElementById('numeroIDInput');
+            const numeroIDInput2 = document.getElementById('numeroIDInput2')
+            const calculo = document.getElementById('nuevo-mensaje');
+
+            try {
+                const response = await fetch("/modificarEvaluacion", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        NumeroEvaluacion2: NumeroEvaluacion2.value, mensaje: mensaje.value,
+                        numeroIDInput: numeroIDInput.value,
+                        numeroIDInput2: numeroIDInput2.value,
+                        calculo:calculo.value
+
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('Evaluacion parcial Modificada correctamente');
+                    location.reload(); // Esta línea reinicia la página
+                } else {
+                    alert('Error al evaluacion la Leccion: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al modificar la evaluacion por 2');
+            }
+        }
+
+        async function BorrarEvaluacion() {
+            const numeroIDInput2 = document.getElementById('numeroIDInput2')
+
+            try {
+                const response = await fetch("/BorrarEvaluacion", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ numeroIDInput2: numeroIDInput2.value })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('Evaluacion parcial Borrada correctamente');
+                    location.reload(); // Esta línea reinicia la página
+                } else {
+                    alert('Error al Borrar la evaluacion: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al Borrar la evaliacion por 2');
+            }
+        }
+
+        async function actualizarIDLecciones() {
+            try {
+                const response = await fetch('/actualizarIDLeccionesEvaluacion');
+                const LeccionID = await response.json();
+
+                const select = document.getElementById('idLeccion');
+                select.innerHTML = ''; // Limpiar opciones actuales
+
+
+
+                // Iterar sobre los usuarios y agregar opciones
+                LeccionID.forEach(Leccion => {
+                    const option = document.createElement('option');
+                    option.value = Leccion.idLeccion;
+                    option.textContent = `Numero ID de la leccion numero ${Leccion.numero_leccion}`;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error al obtener los datos de la leccion:', error);
+            }
+
+
+        }
+        // Llamar a la función para actualizar los IDs cuando se cargue la página
+        window.addEventListener('DOMContentLoaded', actualizarIDLecciones);
+
+        // Event listener para detectar cambios en el select
+        document.getElementById('numeroID').addEventListener('change', function () {
+            const selectedUserId = this.value;
+            obtenerInfoUsuario(selectedUserId);
+
+        });
+
+        function mostrarOtro() {
+            const selectedUserId = document.getElementById('numeroIDInput').value;
+            obtenerInfoUsuario(selectedUserId);
+        }
+
+        // Función para obtener información del usuario
+        function obtenerInfoUsuario(idUsuario) {
+            // Aquí puedes escribir la lógica para obtener información del usuario basada en el ID seleccionado
+            console.log('ID de usuario seleccionado:', idUsuario);
+        }
+
+
+    </script>
+
+    <script>
+        //funcion para los id de las evaluaciones creadas
+        async function actualizarIDEvaluaciones() {
+            try {
+                const response = await fetch('/actualizarIDEvaluaciones');
+                const idEvaluacion = await response.json();
+
+                const select = document.getElementById('NumeroEvaluacion');
+                select.innerHTML = ''; // Limpiar opciones actuales
+
+
+
+                // Iterar sobre los usuarios y agregar opciones
+                idEvaluacion.forEach(Evaluacion => {
+                    const option = document.createElement('option');
+                    option.value = Evaluacion.idevaluacionParcial;
+                    option.textContent = `Numero ID de la evaluacion numero ${Evaluacion.numero_evaluacionParcial} de la leccion ${Evaluacion.numero_leccion}`;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error al obtener los datos de la leccion:', error);
+            }
+
+
+        }
+        // Llamar a la función para actualizar los IDs cuando se cargue la página
+        window.addEventListener('DOMContentLoaded', actualizarIDEvaluaciones);
+
+        // Event listener para detectar cambios en el select
+        document.getElementById('numeroIDInput2').addEventListener('change', function () {
+            const selectedUserId = this.value;
+            obtenerInfoUsuario(selectedUserId);
+
+        });
+
+        function mostrarOtro2() {
+            const selectedUserId = document.getElementById('numeroIDInput2').value;
+            obtenerInfoUsuario2(selectedUserId);
+        }
+
+        // Función para obtener información del usuario
+        function obtenerInfoUsuario2(idUsuario) {
+            // Aquí puedes escribir la lógica para obtener información del usuario basada en el ID seleccionado
+            console.log('ID de usuario seleccionado:', idUsuario);
+        }
+    </script>
+    <script>
+        async function obtenerInfoEvaluacionParcial(numeroIDInput2) {
+            try {
+                // Verificar si idUsuario es null antes de hacer la solicitud
+                if (numeroIDInput2 !== null) {
+                    const response = await fetch(`/obtenerInfoEvaluacionParcial/${numeroIDInput2}`);
+                    if (response.status === 200) {
+                        const usuario = await response.json();
+                        // Rellena los campos con la información del usuario
+                        document.getElementById('numeroIDInput').value = usuario.idLeccion || "";
+                        document.getElementById('NumeroEvaluacion2').value = usuario.numero_evaluacionParcial || "";
+                        document.getElementById('mensaje').value = usuario.forms || "";
+                        document.getElementById('nuevo-mensaje').value = usuario.Link_calculo || "";
+
+
+                    } else {
+                        // Si no se encontró la lección, limpiar los campos
+                        document.getElementById('numeroIDInput').value = "";
+                        document.getElementById('NumeroEvaluacion2').value = "";
+                        document.getElementById('mensaje').value = "";
+                        document.getElementById('nuevo-mensaje').value = "";
+
+                    }
+                } else {
+                    // Si numeroIDInput es null, limpiar los campos
+                    document.getElementById('Descripcion').value = '';
+                }
+
+            } catch (error) {
+                console.error('Error al obtener el usuario:', error);
+            }
+
+        }
+
+        document.getElementById('numeroIDInput2').addEventListener('input', function () {
+            const selectedUserId = this.value;
+            obtenerInfoEvaluacionParcial(selectedUserId);
+
+        });
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,139 @@
+/* CSS Document */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #FF5733, #FF8D1A); /* Degradado de #FF5733 a #FF8D1A */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.box {
+    background-color: white;
+    padding: 10px;
+    border-radius: 20px;
+    width: 300px;
+    height: 120px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+	position: absolute;
+	top: 250px;
+	left: 20px;
+    font-family: cursive, sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.box2{
+    background-color: white;
+    padding: 10px;
+    border-radius: 20px;
+    width: 300px;
+    height: 120px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+	position: absolute;
+	top: 250px;
+	left: 370px;
+    font-family: cursive, sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.box3{
+    background-color: white;
+    padding: 10px;
+    border-radius: 20px;
+    width: 300px;
+    height: 120px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+	position: absolute;
+	top: 450px;
+	left: 20px;
+    font-family: cursive, sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.box4{
+    background-color: white;
+    padding: 10px;
+    border-radius: 20px;
+    width: 300px;
+    height: 120px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+	position: absolute;
+	top: 450px;
+	left: 370px;
+    font-family: cursive, sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.box5{
+    background-color: white;
+    padding: 10px;
+    border-radius: 20px;
+    width: 400px;
+    height: 120px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+	position: absolute;
+	top: 350px;
+	left: 770px;
+    font-family: cursive, sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.acomodar{
+    position: absolute;
+    left: 250px;
+    top: 75px;
+    
+}
+
+.Imagen{
+    position: absolute;
+    top: -45px;
+    left: 750px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.engranaje-esquina {
+    position: absolute;
+    top: -50px;
+    right: -1600px;
+    width: 150px;
+}
+.box6{
+    background-color: white;
+    padding: 10px;
+    border-radius: 20px;
+    width: 300px;
+    height: 120px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+	position: absolute;
+	top: 100px;
+	left: 20px;
+    font-family: cursive, sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+}

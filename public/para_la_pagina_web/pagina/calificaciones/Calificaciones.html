@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calificaciones de Usuario</title>
+    <link rel="stylesheet" type="text/css" href="Calificaciones.css">
+    <link rel="icon" href="../DIDACTILETRAS.png" type="image/png">
+
+</head>
+
+<body>
+    <h1 class="title">CALIFICACIONES DE USUARIO</h1>
+    <div class="container">
+        <form>
+            <!-- <label for="busqueda">Buscar alumno con correo del usuario:</label><br>
+                <input type="text" id="busqueda" name="busqueda"  placeholder="Ingresa el correo"><br> -->
+
+            <label for="Id del usuario">Id del usuario:</label><br>
+            <input type="text" id="Id_del_usuario" name="Id del usuario"><br>
+
+            <label for="tipo_evaluacion">Tipo de evaluación:</label>
+            <select id="tipo_evaluacion" name="tipo_evaluacion" onchange="cambiarIframe()">
+                <option value="" disabled selected>Seleccione un tipo...</option>
+                <option value="inicial">Evaluación Inicial</option>
+                 <!-- <option value="parcial">Evaluación Parcial</option>  -->
+                <option value="final">Evaluación Final</option>
+            </select><br><br>
+
+
+
+            <div id="evaluacion_inicial2" style="display: none;">
+                <label for="evaluacion_inicial">Calificación Evaluación Inicial:</label><br>
+                <input type="text" id="evaluacion_inicial" name="evaluacion_inicial"maxlength="3"><br>
+
+            </div>
+
+            <div id="evaluacion_final2" style="display: none;">
+                <label for="evaluacion_final">Calificación Evaluación Final:</label><br>
+                <input type="text" id="evaluacion_final" name="evaluacion_final"maxlength="3"><br><br>
+
+            </div>
+
+
+
+
+
+            <div id="input_parcial">
+                <label for="evaluacion_parcial">Detalles de Evaluación Parcial:</label>
+                <input list="datalist_evaluacion_parcial" id="evaluacion_parcial" name="evaluacion_parcial">
+                <datalist id="datalist_evaluacion_parcial">
+
+                </datalist>
+            </div>
+            <div class="acciones">
+                <button class="accion" id="crearBoton" onclick="crearCalificacion(event)">
+                    <p>Crear</p>
+                </button>
+                <button class="accion" id="modificarBoton" onclick="modificarCalificacion(event)">
+                    <p>Modificar</p>
+                </button>
+                <button class="accion" id="borrarBoton" onclick="eliminarCalificacion(event)">
+                    <p>Borrar</p>
+                </button>
+            </div>
+
+
+
+        </form>
+
+    </div>
+    <div id="calificacionesTabla" class="calificacionesTabla">
+        <table style="display: none;">
+            <thead>
+                <tr>
+                    <th>ID Usuario</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>Comentario</th>
+                    <th>Fecha comentario</th>
+                    <th>Tipo de evaluacion</th>
+                    <th>Calificación</th>
+                </tr>
+            </thead>
+            <tbody id="calificaciones">
+                <!-- Las filas serán agregadas aquí por el JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="iframe-container">
+        <iframe id="iframe" src=""></iframe>
+    </div>
+
+    <div class="contenedor">
+        <a href="../Pagina docentes/PantallaDocentes.html">
+            <img src="../regresar-sn fondo.png" class="imagen-esquina" style="width: 100px">
+        </a>
+
+
+        <!-- codigo para bloquear las letras y del buscador -->
+        <script>
+            document.getElementById('Id_del_usuario').addEventListener('input', function (event) {
+                const regex = /[^0-9]/g;
+                event.target.value = event.target.value.replace(regex, '');
+            });
+            document.getElementById('evaluacion_inicial').addEventListener('input', function (event) {
+                const regex = /[^0-9]/g;
+                event.target.value = event.target.value.replace(regex, '');
+            });
+            document.getElementById('evaluacion_final').addEventListener('input', function (event) {
+                const regex = /[^0-9]/g;
+                event.target.value = event.target.value.replace(regex, '');
+            });
+            document.getElementById('evaluacion_leccion').addEventListener('input', function (event) {
+                const regex = /[^0-9]/g;
+                event.target.value = event.target.value.replace(regex, '');
+            });
+            document.getElementById('evaluacion_parcial').addEventListener('input', function (event) {
+                const regex = /[^0-9]/g;
+                event.target.value = event.target.value.replace(regex, '');
+            });
+
+            //parte donde ingresa la busqueda
+            const inputBuscar = document.getElementById('busqueda');
+            const tabla = document.getElementById('calificaciones').getElementsByTagName('tr');
+
+            inputBuscar.addEventListener('input', function () {
+                const filtro = inputBuscar.value.toLowerCase();
+
+                for (let i = 1; i < tabla.length; i++) {
+                    const fila = tabla[i];
+                    const correo = fila.getElementsByTagName('td')[3].textContent.toLowerCase();
+
+                    if (correo.includes(filtro)) {
+                        fila.style.display = '';
+                    } else {
+                        fila.style.display = 'none';
+                    }
+                }
+            });
+
+
+
+        </script>
+        <!-- codigo para rellenar la informacion -->
+        <script>
+            //para rellenar el cuadro con la informacion de los usuarios
+            document.addEventListener('DOMContentLoaded', async () => {
+                try {
+                    const response = await fetch('/calificaciones');
+                    const calificaciones = await response.json();
+
+                    const tbody = document.getElementById('calificaciones');
+                    if (tbody) {
+                        const comentariosPorUsuario = {};
+
+                        // Agrupar comentarios por ID de usuario
+                        calificaciones.forEach(calificacion => {
+                            const idUsuario = calificacion.ID_USUARIOS;
+                            if (!comentariosPorUsuario[idUsuario]) {
+                                comentariosPorUsuario[idUsuario] = [];
+                            }
+                            comentariosPorUsuario[idUsuario].push(calificacion);
+                        });
+
+                        // Iterar sobre los comentarios agrupados
+                        Object.values(comentariosPorUsuario).forEach(comentariosUsuario => {
+                            comentariosUsuario.forEach((calificacion, index) => {
+                                const fila = document.createElement('tr');
+
+                                const celdaIDUsuario = document.createElement('td');
+                                const celdaNombre = document.createElement('td');
+                                const celdaApellidos = document.createElement('td');
+                                const celdaCorreo = document.createElement('td');
+                                const celdaTelefono = document.createElement('td');
+                                const celdaComentario = document.createElement('td');
+                                const celdaFecha = document.createElement('td');
+                                const celdaIdEvaluacion = document.createElement('td');
+                                const celdaCalificacion = document.createElement('td');
+
+                                if (index === 0) { // Agregar información del usuario solo en la primera fila
+                                    celdaIDUsuario.textContent = calificacion.ID_USUARIOS || '...';
+                                    celdaNombre.textContent = calificacion.nombre || '...';
+                                    celdaApellidos.textContent = calificacion.apellidos || '...';
+                                    celdaCorreo.textContent = calificacion.correo || '...';
+                                    celdaTelefono.textContent = calificacion.telefono || '...';
+                                } else {
+                                    // En las filas siguientes, dejar las celdas del usuario vacías
+                                    celdaIDUsuario.textContent = calificacion.ID_USUARIOS || '...';
+                                    celdaNombre.textContent = '...';
+                                    celdaApellidos.textContent = '...';
+                                    celdaCorreo.textContent = calificacion.correo ||'...';
+                                    celdaTelefono.textContent = '...';
+                                }
+
+                                celdaComentario.textContent = calificacion.comentario || '...';
+
+                                // Verificar si la fecha es nula o indefinida antes de formatearla
+                                if (calificacion.fecha) {
+                                    const fecha = new Date(calificacion.fecha);
+                                    const fechaFormateada = fecha.toLocaleDateString('es-ES', {
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric'
+                                    });
+                                    celdaFecha.textContent = fechaFormateada;
+                                } else {
+                                    celdaFecha.textContent = '...'; // Si la fecha es nula o indefinida, asignar un texto vacío
+                                }
+
+                                celdaIdEvaluacion.textContent = calificacion.TipoDeEvaliacion || '...';
+                                celdaCalificacion.textContent = calificacion.calificacion || '...';
+
+                                fila.appendChild(celdaIDUsuario);
+                                fila.appendChild(celdaNombre);
+                                fila.appendChild(celdaApellidos);
+                                fila.appendChild(celdaCorreo);
+                                fila.appendChild(celdaTelefono);
+                                fila.appendChild(celdaComentario);
+                                fila.appendChild(celdaFecha);
+                                fila.appendChild(celdaIdEvaluacion);
+                                fila.appendChild(celdaCalificacion);
+
+                                tbody.appendChild(fila);
+                            });
+                        });
+
+                        document.querySelector('#calificacionesTabla table').style.display = 'table';
+                    } else {
+                        console.error('No se encontró el elemento con ID "calificaciones".');
+                    }
+                } catch (error) {
+                    console.error('Error fetching calificaciones:', error);
+                }
+            });
+            //codigo para aparecer el datalist
+            document.getElementById('tipo_evaluacion').addEventListener('change', function () {
+                var inputParcial = document.getElementById('input_parcial');
+                if (this.value === 'parcial') {
+                    inputParcial.style.display = 'block';
+                } else {
+                    inputParcial.style.display = 'none';
+                }
+            });
+            //codigo para actualizar el datalist con las evaluaciones existentes
+
+            async function actualizarIDEvaluaciones() {
+                try {
+                    const response = await fetch('/actualizarIDEvaluaciones');
+                    const idEvaluacion = await response.json();
+
+                    const select = document.getElementById('datalist_evaluacion_parcial');
+                    select.innerHTML = ''; // Limpiar opciones actuales
+                    // Iterar sobre los usuarios y agregar opciones
+                    idEvaluacion.forEach(Evaluacion => {
+                        const option = document.createElement('option');
+                        option.value = Evaluacion.idevaluacionParcial;
+                        option.textContent = `Numero ID de la evaluacion numero  ${Evaluacion.numero_evaluacionParcial} de la leccion ${Evaluacion.numero_leccion}`;
+                        select.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error('Error al obtener los datos de la leccion:', error);
+                }
+
+
+            }
+            // Llamar a la función para actualizar los IDs cuando se cargue la página
+            window.addEventListener('DOMContentLoaded', actualizarIDEvaluaciones);
+
+            //codigo para que aparesca las paginas de las calificaciones
+
+
+        </script>
+        <!-- codigo para mostrar los iframe -->
+        <script>
+            //codigo para aparecer los iframe de inicial y final
+            async function cambiarIframe() {
+                var tipo_evaluacion = document.getElementById("tipo_evaluacion");
+                var iframe = document.getElementById("iframe");
+
+
+
+                var evaluacionInicialInput = document.getElementById("evaluacion_inicial2");
+                var evaluacionFinalInput = document.getElementById("evaluacion_final2");
+
+
+
+                if (tipo_evaluacion.value === "inicial") {
+                    try {
+                        const response = await fetch('/evaluacion-inicial');
+                        const data = await response.json();
+                        iframe.src = data.Link_calculo;
+
+                        evaluacionInicialInput.style.display = "block";
+                        evaluacionFinalInput.style.display = "none";
+
+
+                    } catch (error) {
+                        console.error('Error al obtener los datos:', error);
+                    }
+
+                } else if (tipo_evaluacion.value === "final") {
+                    // Si selecciona otra opción, puedes cambiar el src a algo más apropiado
+                    try {
+                        const response = await fetch('/evaluacion-final');
+                        const data = await response.json();
+                        iframe.src = data.Link_calculo;
+
+                        evaluacionFinalInput.style.display = "block";
+
+
+                        evaluacionInicialInput.style.display = "none";
+
+
+                    } catch (error) {
+                        console.error('Error al obtener los datos:', error);
+                    }
+                } else {
+                    // Si selecciona otra opción, puedes cambiar el src a algo más apropiado
+                    iframe.src = "";
+                }
+            }
+
+
+            async function cambiarIframe2(evaluacion_parcial) {
+                try {
+                    var iframe = document.getElementById("iframe");
+                    // Verificar si idUsuario es null antes de hacer la solicitud
+                    if (evaluacion_parcial !== null) {
+                        const response = await fetch(`/obtenerInfoEvaluacionParcial/${evaluacion_parcial}`);
+                        if (response.status === 200) {
+                            const usuario = await response.json();
+                            // Rellena los campos con la información del usuario
+                            iframe.src = usuario.Link_calculo;
+                        } else {
+                            iframe.src = "";
+                        }
+                    } else {
+                        iframe.src = '';
+                    }
+
+                } catch (error) {
+                    console.error('Error al obtener el usuario:', error);
+                }
+            }
+            document.getElementById('evaluacion_parcial').addEventListener('input', function () {
+                const selectedUserId = this.value;
+                cambiarIframe2(selectedUserId);
+
+            });
+        </script>
+
+        <!-- codigo para ingresar la calificacion  -->
+        <script>
+            async function crearCalificacion(event) {
+                event.preventDefault(); // Evita que el formulario se envíe y la página se recargue.
+
+                var tipo_evaluacion = document.getElementById("tipo_evaluacion").value;
+                var usuario = document.getElementById('Id_del_usuario').value;
+                var calificacionInicial = tipo_evaluacion === "inicial" ? document.getElementById('evaluacion_inicial').value : null;
+                var calificacionFinal = tipo_evaluacion === "final" ? document.getElementById('evaluacion_final').value : null;
+
+                if (tipo_evaluacion === "inicial") {
+                    try {
+                        const response = await fetch("/crearCalificacionInicial", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                calificacionInicial: calificacionInicial,
+                                usuario: usuario
+                            })
+                        });
+                        const data = await response.json();
+                        if (data.success) {
+                            alert(data.message.startsWith('Calificación ingresada exitosamente') ? data.message : 'Calificación ingresada exitosamente');
+                            location.reload();
+                        } else {
+                            alert('Error al crear la calificación inicial: ' + data.message);
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Error al crear la calificación inicial');
+                    }
+                } else if (tipo_evaluacion === "final") {
+                    try {
+                        const response = await fetch("/crearcalificacionFinal", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                calificacionFinal: calificacionFinal,
+                                usuario: usuario
+                            })
+                        });
+                        const data = await response.json();
+                        if (data.success) {
+                            alert(data.message.startsWith('Calificación ingresada exitosamente') ? data.message : 'Calificación ingresada exitosamente');
+                            location.reload();
+                        } else {
+                            alert('Error al crear la calificación final: ' + data.message);
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Error al crear la calificación final');
+                    }
+                }
+            }
+
+            //modificar
+            async function modificarCalificacion(event) {
+                event.preventDefault(); // Evita que el formulario se envíe y la página se recargue.
+
+                var tipo_evaluacion = document.getElementById("tipo_evaluacion").value;
+                var usuario = document.getElementById('Id_del_usuario').value;
+                var calificacionInicial = tipo_evaluacion === "inicial" ? document.getElementById('evaluacion_inicial').value : null;
+                var calificacionFinal = tipo_evaluacion === "final" ? document.getElementById('evaluacion_final').value : null;
+
+                if (tipo_evaluacion === "inicial") {
+                    try {
+                        const response = await fetch("/modificarCalificacioninicial", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                calificacionInicial: calificacionInicial,
+                                usuario: usuario
+                            })
+                        });
+                        const data = await response.json();
+                        if (data.success) {
+                            alert(data.message.startsWith('Calificación modificada exitosamente') ? data.message : 'Calificación ingresada exitosamente');
+                            location.reload();
+                        } else {
+                            alert('Error al crear la calificación inicial: ' + data.message);
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Error al crear la calificación inicial');
+                    }
+                } else if (tipo_evaluacion === "final") {
+                    try {
+                        const response = await fetch("/modificarCalificacionfinal", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                calificacionFinal: calificacionFinal,
+                                usuario: usuario
+                            })
+                        });
+                        const data = await response.json();
+                        if (data.success) {
+                            alert(data.message.startsWith('Calificación modificada exitosamente') ? data.message : 'Calificación ingresada exitosamente');
+                            location.reload();
+                        } else {
+                            alert('Error al crear la calificación final: ' + data.message);
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Error al crear la calificación final');
+                    }
+                }
+            }
+
+            //eliminar
+            async function eliminarCalificacion(event) {
+                event.preventDefault(); // Evita que el formulario se envíe y la página se recargue.
+
+                var tipo_evaluacion = document.getElementById("tipo_evaluacion").value;
+                var usuario = document.getElementById('Id_del_usuario').value;
+                var calificacionInicial = tipo_evaluacion === "inicial" ? document.getElementById('evaluacion_inicial').value : null;
+                var calificacionFinal = tipo_evaluacion === "final" ? document.getElementById('evaluacion_final').value : null;
+
+                if (tipo_evaluacion === "inicial") {
+                    try {
+                        const response = await fetch("/eliminarCalificacionInicial", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                usuario: usuario
+                            })
+                        });
+                        const data = await response.json();
+                        if (data.success) {
+                            alert(data.message.startsWith('Calificación eliminada exitosamente') ? data.message : 'Calificación ingresada exitosamente');
+                            location.reload();
+                        } else {
+                            alert('Error al eliminar la calificación inicial: ' + data.message);
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Error al crear la calificación inicial');
+                    }
+                } else if (tipo_evaluacion === "final") {
+                    try {
+                        const response = await fetch("/eliminarCalificacionFInal", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                usuario: usuario
+                            })
+                        });
+                        const data = await response.json();
+                        if (data.success) {
+                            alert(data.message.startsWith('Se reactivó la lección') ? data.message : 'Calificación final creada correctamente');
+                            location.reload();
+                        } else {
+                            alert('Error al crear la calificación final: ' + data.message);
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Error al crear la calificación final');
+                    }
+                }
+            }
+
+
+        </script>
+</body>
+
+</html>

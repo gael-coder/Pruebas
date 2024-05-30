@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIDACTI LETRAS</title>
+    <link rel="stylesheet" href="visualizarActPre.css">
+    <link rel="icon" href="DIDACTILETRAS.png" type="image/png">
+
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="title">Actividad: preguntas con Texto</h1>
+
+        <div class="activity-info" id="identificadorDiv">
+
+
+            <div for="descripcion2" style="position: relative;">Descripción:</div>
+            <div id="descripcion2" name="cuadro1" rows="2"
+                style="width: 100%; height: 100px; position: relative; top: 20px;"></div>
+
+            <!-- Primer par de Cuadros -->
+            <div class="cuadro">
+
+                <div class="opciones">
+                    <div class="opcion" id="opcionF1">
+                        <div class="opcion-texto">R</div>
+                    </div>
+                </div>
+                <textarea id="cuadro1" name="cuadro1" rows="4" placeholder="Respuesta 1"></textarea>
+            </div>
+
+            <!-- Segundo par de Cuadros -->
+            <div class="cuadro">
+                <div class="opciones">
+                    <div class="opcion" id="opcionF2">
+                        <div class="opcion-texto">R</div>
+                    </div>
+                </div>
+                <textarea id="cuadro2" name="cuadro2" rows="4" placeholder="Respuesta 2"></textarea>
+            </div>
+
+            <!-- Tercer par de Cuadros -->
+            <div class="cuadro">
+                <div class="opciones">
+                    <div class="opcion" id="opcionF3">
+                        <div class="opcion-texto">R</div>
+                    </div>
+                </div>
+                <textarea id="cuadro3" name="cuadro3" rows="4" placeholder="Respuesta 3"></textarea>
+            </div>
+
+            <!-- Cuarto par de Cuadros -->
+            <div class="cuadro">
+                <div class="opciones">
+                    <div class="opcion" id="opcionF4">
+                        <div class="opcion-texto">R</div>
+                    </div>
+                </div>
+                <textarea id="cuadro4" name="cuadro4" rows="4" placeholder="Respuesta 4"></textarea>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Botón Continuar -->
+    <button onclick="enviarValores()" class="boton-continuar boton-continuar-posicionado" type="button">
+        Continuar
+    </button>
+
+    <script>
+        const smallBoxes = document.querySelectorAll('.small-box');
+
+        smallBoxes.forEach(item => {
+            item.addEventListener('click', event => {
+                if (!item.classList.contains('checked')) {
+                    smallBoxes.forEach(box => {
+                        box.classList.remove('checked');
+                    });
+                    item.classList.add('checked');
+                }
+            });
+        });
+
+        // Mostrar el cuadro emergente al hacer clic en el cuadro blanco
+        document.querySelector('.white-box').addEventListener('click', function () {
+            document.querySelector('.popup').classList.toggle('show');
+        });
+
+        // Cerrar el cuadro emergente al hacer clic en el botón de cerrar
+        document.querySelector('.close-btn').addEventListener('click', function () {
+            document.querySelector('.popup').classList.remove('show');
+        });
+
+        //------------------------------------------------------------------------------------
+
+
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const usuario = localStorage.getItem('usuario');
+            console.log(usuario);
+        });
+        const urlParams = new URLSearchParams(window.location.search);
+        const id_Actividad = urlParams.get('id');
+
+        console.log(`ID de la actividad recuperado de la URL: ${id_Actividad}`);
+
+        // Guardar el ID de la actividad en el localStorage
+        localStorage.setItem('idActividad', id_Actividad);
+
+        console.log(`ID de la actividad almacenado en el localStorage: ${id_Actividad}`);
+        async function obtenerInfoActividades(id_Actividad) {
+            try {
+                const response = await fetch(`/obtenerInfoActividades/${id_Actividad}`);
+
+
+                const actividad = await response.json();
+
+                // Rellena los campos con la información de la pregunta
+                document.getElementById('descripcion2').textContent = actividad.descripcion || "";
+                console.log(actividad.descripcion)
+
+
+
+
+            } catch (error) {
+                // Si hay un error en la solicitud, limpiar los campos y mostrar el error
+                alert('Error al obtener la actividad2:', error);
+            }
+
+
+
+        }
+
+        async function obtenerRespuestasYValores(id_Actividad) {
+            try {
+                if (id_Actividad !== null) {
+                    const response = await fetch(`/obtenerRespuestasYValores/${id_Actividad}`);
+
+                    if (response.status === 200) {
+                        const respuestas = await response.json();
+
+                        // Verificar si se encontraron respuestas
+                        if (respuestas.length > 0) {
+                            // Iterar sobre las respuestas en grupos de cuatro
+                            for (let i = 0; i < respuestas.length; i += 4) {
+                                const grupoRespuestas = respuestas.slice(i, i + 4);
+
+                                // Almacenar respuestas y realizar clics dependiendo del valor
+                                grupoRespuestas.forEach((respuesta, index) => {
+                                    const cuadroPregunta = document.getElementById(`cuadro${index + 1}`);
+                                    const opcionPregunta = document.getElementById(`opcionV${index + 1}Preguntas`);
+                                    const opcionFalsa = document.getElementById(`opcionF${index + 1}Preguntas`);
+
+                                    cuadroPregunta.textContent = respuesta.Respuesta || "";
+
+
+                                });
+                            }
+                        } else {
+                            console.log("No se encontraron respuestas para este usuario.");
+                        }
+                    } else {
+                        console.log("Error al obtener las respuestas del servidor.");
+                    }
+                } else {
+                    console.log("El id de actividad es nulo.");
+                }
+            } catch (error) {
+                console.error('Error al obtener la información de las respuestas:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            obtenerInfoActividades(id_Actividad);
+            obtenerRespuestasYValores(id_Actividad)
+        });
+
+
+
+
+
+
+    </script>
+    <script>
+        document.querySelectorAll('.opcion').forEach((opcion, index) => {
+            opcion.addEventListener('click', () => {
+                // Reseteamos todos los cuadros a su color original y opacidad
+                document.querySelectorAll('.cuadro').forEach(cuadro => {
+                    cuadro.style.backgroundColor = '';
+                    cuadro.style.opacity = '';
+                    cuadro.style.borderRadius = ''; // Eliminar cualquier radio de borde anterior
+                });
+                // Cambiamos el color del cuadro al que se le hizo clic
+                document.querySelectorAll('.cuadro')[index].style.backgroundColor = 'green';
+                // Agregamos un radio de borde al cuadro seleccionado
+                document.querySelectorAll('.cuadro')[index].style.borderRadius = '15px'; // Puedes ajustar el valor según tus preferencias
+            });
+        });
+
+        //guardar valor para la comparaccion
+        // Variable para almacenar el valor
+        var valorSeleccionado1 = null;
+        var valorSeleccionado2 = null;
+        var valorSeleccionado3 = null;
+        var valorSeleccionado4 = null;
+
+        // Obtener los elementos div por sus IDs
+        var opcionF1 = document.getElementById('opcionF1');
+        var opcionF2 = document.getElementById('opcionF2');
+        var opcionF3 = document.getElementById('opcionF3');
+        var opcionF4 = document.getElementById('opcionF4');
+
+        // Agregar event listeners para el clic en cada opción
+        // Valores de la respuesta 1
+        opcionF1.addEventListener('click', function () {
+            valorSeleccionado1 = 1;
+            valorSeleccionado2 = null;
+            valorSeleccionado3 = null;
+            valorSeleccionado4 = null;
+            console.log('Seleccionaste F1, ' + valorSeleccionado1);
+        });
+
+        // Valores de la respuesta 2
+        opcionF2.addEventListener('click', function () {
+            valorSeleccionado1 = null;
+            valorSeleccionado2 = 1;
+            valorSeleccionado3 = null;
+            valorSeleccionado4 = null;
+            console.log('Seleccionaste F2, ' + valorSeleccionado2);
+        });
+
+        // Valores de la respuesta 3
+        opcionF3.addEventListener('click', function () {
+            valorSeleccionado1 = null;
+            valorSeleccionado2 = null;
+            valorSeleccionado3 = 1;
+            valorSeleccionado4 = null;
+            console.log('Seleccionaste F3, ' + valorSeleccionado3);
+        });
+
+        // Valores de la respuesta 4
+        opcionF4.addEventListener('click', function () {
+            valorSeleccionado1 = null;
+            valorSeleccionado2 = null;
+            valorSeleccionado3 = null;
+            valorSeleccionado4 = 1;
+            console.log('Seleccionaste F4, ' + valorSeleccionado4);
+        });
+
+        async function enviarValores() {
+            const idActividad = id_Actividad; // Asegúrate de que esta variable esté definida
+            try {
+                const formData = {
+                    valor1: valorSeleccionado1,
+                    valor2: valorSeleccionado2,
+                    valor3: valorSeleccionado3,
+                    valor4: valorSeleccionado4,
+                    idActividad: idActividad
+                };
+
+                const response = await fetch("/enviarRespuestas", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    let mensaje = 'Resultados:\n';
+                    data.forEach((respuesta, index) => {
+
+
+                        mensaje += `Respuesta ${index + 1}: ${respuesta.Resultado}\n`;
+                        //  history.back(); // Redirige a la página anterior después de mostrar el alert
+
+                    });
+                    alert(mensaje);
+                } else {
+                    alert('Error al obtener los resultados: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al procesar la solicitud');
+            }
+        }
+    </script>
+
+</body>
+
+</html>

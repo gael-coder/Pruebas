@@ -1,0 +1,169 @@
+body {
+    background-image: linear-gradient(to bottom, #ffff15ce, #ffffc0);
+    color: #000; /* Color de texto negro */
+    font-family: Arial, sans-serif;
+    margin: 0; /* Elimina los márgenes predeterminados */
+    font-family: cursive, sans-serif;
+    font-size: 17px; /* Ajusta el tamaño de la fuente a 20px */
+
+}
+
+.container {
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+}
+
+h1 {
+    text-align: center; /* Centra el título horizontalmente */
+    font-family: 'Times New Roman', sans-serif; /* Tipo de letra */
+    font-size: 50px; /* Tamaño de la fuente */
+}
+
+.acreditacion {
+    width: 30cm; /* Ancho del rectángulo */
+    height: 13.5cm; /* Alto del rectángulo */
+    background-color: #FFF; /* Color blanco */
+    border: 1px solid #000; /* Borde sólido de color negro */
+    padding: 20px; /* Espaciado interior */
+    text-align: center; /* Alineación del texto centrada */
+    position: absolute; /* Posición absoluta */
+    top: 50%; /* Alinea el rectángulo en la mitad superior de la ventana */
+    left: 46%; /* Alinea el rectángulo en la mitad izquierda de la ventana */
+    transform: translate(-50%, -50%); /* Mueve el rectángulo hacia arriba y hacia la izquierda en la mitad de su tamaño */
+    z-index: -1; /* Mueve el rectángulo detrás de todos los elementos */
+}
+
+/* de la palabra nombre */
+.acreditacion label {
+    position: absolute; /* Posición absoluta para permitir el posicionamiento */
+    top: 190px; /* Ajusta la distancia desde la parte superior según sea necesario */
+    left: 8cm; /* Alinea el label en el centro horizontalmente */
+    transform: translateX(-50%); /* Centra el label horizontalmente */
+}
+
+/* de la linea horizontal */
+.acreditacion hr {
+    position: absolute; /* Posición absoluta para permitir el posicionamiento */
+    top: 200px; /* Ajusta la distancia desde la parte superior según sea necesario */
+    left: 9cm; /* Alinea el hr al borde izquierdo */
+    width: 50%; /* Ajusta el ancho al 100% */
+}
+
+.acreditacion p {
+    position: absolute; /* Posición absoluta para permitir el posicionamiento */
+    top: 220px; /* Ajusta la distancia desde la parte superior según sea necesario */
+    left: 50%; /* Alinea el párrafo en el centro horizontalmente */
+    transform: translateX(-50%); /* Centra el párrafo horizontalmente */
+    width: 80%; /* Ancho del párrafo */
+    text-align: center; /* Alinea el texto en el centro */
+    font-family: Arial, Helvetica, sans-serif; /* Tipo de letra */
+    font-size: 20px; /* Tamaño de la fuente */
+}
+
+.imagen-esquina {
+    position: absolute;
+    top: 1.5cm;
+    right: 3.6cm;
+    width: 10%;
+    z-index: 1;
+    border-radius: 5vw;
+}
+
+.imagen-esquina2 {
+    position: fixed; /* Posicionamiento fijo para mantener la imagen en la ventana incluso al hacer scroll */
+    top: 20px; /* Ajusta la posición desde arriba según sea necesario */
+    right: 40px; /* Ajusta la posición desde la derecha según sea necesario */
+    width: 150px; /* Ajusta el ancho según sea necesario */
+    height: auto; /* Mantén la proporción de la imagen */
+    background-size: cover; /* Ajusta el tamaño de la imagen */
+    cursor: pointer; /* Cambia el cursor al pasar sobre la imagen */
+}
+
+#fecha {
+    position: absolute;
+    bottom: 2cm; /* Ajusta la distancia desde la parte inferior */
+    right: 27cm; /* Ajusta la distancia desde la derecha */
+}
+
+.evaluaciones {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+    position: fixed;
+    top: 620px;
+    left: 310px;  
+    gap: 670px; /* Espacio horizontal de 20px entre los divs hijos */
+
+
+}
+
+.evaluacion-inicial, .evaluacion-final {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px; /* Agrega una separación vertical de 20px */
+
+}
+.evaluacion-inicial2, .evaluacion-final2 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px; /* Agrega una separación vertical de 20px */
+
+}
+
+.evaluacion-inicial label, .evaluacion-final label {
+    margin-bottom: 5px;
+}
+
+.cajaT {
+    width: 500px; /* Ancho del campo de entrada */
+    height: 20px; /* Alto del campo de entrada */
+    padding: 0px; /* Espacio interno */
+    border: 1px solid #ccc; /* Borde del campo de entrada */
+    border-radius: 5px; /* Bordes redondeados */
+    background-color: white; /* Color de fondo del cuadro de texto */
+}
+
+.cajaT2 {
+    width: 100px; /* Ancho del campo de entrada */
+    height: 20px; /* Alto del campo de entrada */
+    padding: 0px; /* Espacio interno */
+    border: 1px solid #ccc; /* Borde del campo de entrada */
+    border-radius: 5px; /* Bordes redondeados */
+    background-color: white; /* Color de fondo del cuadro de texto */
+    text-align: center; /* Centra el texto horizontalmente */
+    line-height: 20px; /* Centra el texto verticalmente */  
+}
+
+.contenedor-texto {
+    position: absolute;
+    top: 37%;
+    left: 46.5%;
+    transform: translate(-50%, -50%);
+}
+
+.contenedor-texto2 {
+    position: absolute;
+    top: 62%;
+    left: 45%;
+    transform: translate(-50%, -50%);
+}
+.nombre {
+    font-size: 20px; /* Ajusta el tamaño del texto dentro del input */
+    padding: 10px; /* Añade espacio interior al input */
+    margin: 20px; /* Añade espacio exterior alrededor del input */
+    width: 563px; /* Ajusta el ancho del input */
+    border: none; /* Elimina el borde del input */
+    border-radius: 5px; /* Bordes redondeados (opcional) */
+    position: absolute;
+    top: 150px;
+    left: 320px;
+    background-color: transparent; /* Hace el fondo del input transparente */
+    color: black; /* Color del texto */
+    outline: none; /* Elimina el borde de enfoque predeterminado */
+}

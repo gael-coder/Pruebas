@@ -1,0 +1,171 @@
+body {
+    background: linear-gradient(to right, #FF5733, #FFC300); /* Degradado de #FF5733 a #FFC300 */
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+
+}
+
+.pestaña {
+    background-color: #ffffff;
+    color: #000000;
+    width: 750px; /* Ancho de la pestaña */
+    height: 50px; /* Altura de la pestaña */
+    line-height: 50px; /* Centra el texto verticalmente */
+    position: relative; /* Posición relativa */
+    left: 70px;
+    text-align: left;
+    cursor: pointer;
+    transition: left 0.3s ease-in-out;
+    border-radius: 0 5px 5px 0;
+    padding-left: 40px; /* Espacio adicional a la izquierda del texto */
+    margin-bottom: 20px; /* Espacio entre cada conjunto de pestaña y menú */
+}
+
+.menu {
+    background-color: #ffffff;
+    position: relative; /* Posición absoluta */
+    top: -10px; /* Posiciona el menú debajo de la pestaña */
+    left: 70px; /* Alinea el menú con la pestaña */
+    width: 770px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    border-radius: 5px;
+    display: none; /* Oculto por defecto */
+}
+
+.menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu ul li {
+    margin-bottom: 10px;
+}
+
+.menu ul li a {
+    text-decoration: none;
+    color: #000000;
+}
+
+/* Nuevo CSS para el triángulo */
+.pestaña:before {
+    content: "";
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 7px 10px 0;
+    border-color: transparent #FF5733 transparent transparent;
+    position: absolute;
+    top: 50%;
+    left: 20px; /* Posición del triángulo */
+    transform: translateY(-50%); /* Centra verticalmente */
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Cambia la dirección del triángulo cuando se despliega el menú */
+.pestaña.desplegado:before {
+    transform: translateY(-50%) rotate(180deg); /* Gira el triángulo 180 grados */
+}
+
+.leccion {
+    font-family: cursive, sans-serif;
+}
+
+.menu {
+    font-family: cursive, sans-serif;
+}
+
+.imagen-esquina {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 150px; /* Ajusta el ancho según sea necesario */
+}
+
+.container, .container2 {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+
+.container2 {
+    top: 250px; /* Ajusta la posición vertical para separar las dos contenedores */
+}
+
+.cuadrado, .cuadrado2 {
+    background-color: #bebebe;
+    color: #000000;
+    padding: 35px 35px;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-family: cursive, sans-serif;
+    position: relative;
+    margin-bottom: 40px; /* Aumentar el margen inferior para separar los divs */
+}
+
+.fa-lock, .fa-unlock {
+    position: absolute;
+    bottom: 10px; /* Ajusta la posición vertical del icono */
+    left: 50%;
+    transform: translateX(-50%); /* Centra horizontalmente el icono */
+}
+
+.cuadrado.desbloqueado, .cuadrado2.desbloqueado {
+    background-color: #4CAF50; /* Color de fondo para el estado desbloqueado */
+    color: #ffffff; /* Color del texto para el estado desbloqueado */
+    border: 2px solid #4CAF50; /* Borde para el estado desbloqueado */
+    text-align: center; /* Centrar el contenido */
+    padding: 20px; /* Añadir padding para espacio interior */
+}
+
+.cuadrado.desbloqueado div, .cuadrado2.desbloqueado div {
+    margin-bottom: 20px; /* Espacio entre los bloques de contenido */
+}
+
+.cuadrado.desbloqueado hr, .cuadrado2.desbloqueado hr {
+    border: none;
+    border-top: 2px solid #ffffff; /* Color y estilo de la línea de separación */
+    margin: 20px 0; /* Margen superior e inferior de la línea */
+}
+
+.mensaje {
+    margin-top: 10px; /* Espacio encima del mensaje */
+    font-size: 16px; /* Tamaño de la fuente del mensaje */
+    font-weight: bold; /* Negrita para el mensaje */
+}
+
+.redireccion {
+    display: block;
+    margin-top: 10px; /* Espacio encima del enlace */
+    color: #ffffff; /* Color del texto del enlace */
+    text-decoration: none; /* Sin subrayado */
+    font-size: 16px; /* Tamaño de la fuente del enlace */
+    background-color: #333333; /* Color de fondo del enlace */
+    padding: 10px 20px; /* Espaciado interno del enlace */
+    border-radius: 5px; /* Bordes redondeados del enlace */
+    transition: background-color 0.3s; /* Transición suave para el cambio de color */
+}
+
+.redireccion:hover {
+    background-color: #555555; /* Color de fondo del enlace al pasar el mouse */
+}
+
+/* Estilos para el contenedor de descripción */
+#descripcion-container {
+    position: absolute;
+    top: 90px;
+    left: 1270px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1; /* Para asegurar que esté encima de las otras capas */
+}
+
+/* Estilos para el texto de la descripción */
+#descripcion-container p {
+    margin: 0;
+}

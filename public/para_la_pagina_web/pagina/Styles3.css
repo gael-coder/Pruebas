@@ -1,0 +1,168 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #C8A2C8;
+    font-family: cursive, sans-serif;
+    font-size: 17px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.content {
+    background-color: white;
+    padding: 20px; /* Aumentar el relleno para hacer el cuadro más grande */
+    width: 55%; /* Ajustar el ancho del cuadro */
+    height: 20%; /* Ajustar la altura del cuadro */
+    border-radius: 50px; /* Ajustar el radio de los bordes para que coincida con el tamaño del cuadro */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    position: relative; /* Cambiar la posición a relativa para que los elementos posicionados dentro de este div se basen en él */
+    top: -300px; /* Mover el cuadro hacia abajo */
+    left: -75px; /* Mover el cuadro hacia la derecha */
+    overflow: auto; /* Hacer que el contenido desborde sea visible con barras de desplazamiento */
+    word-wrap: break-word; /* Permitir saltos de línea automáticos */
+    white-space: pre-line; /* Mantener los saltos de línea en el contenido */
+    font-family: cursive, sans-serif;
+    font-size: 20px;
+}
+
+.imagen-esquina {
+    position: absolute;
+    top: 10px; /* ajusta la distancia desde el borde superior según sea necesario */
+    right: 10px; /* ajusta la distancia desde el borde derecho según sea necesario */
+    right: 10px; /* ajusta el ancho de la imagen según sea necesario */
+}
+
+.small-box {
+    background-color: white;
+    margin-top: 20px; /* Espacio entre los cuadros */
+    width: 60%; /* Ancho del cuadro pequeño */
+    height: 100px; /* Alto del cuadro pequeño */
+    border-radius: 540px; /* Radio de los bordes */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+    top: -600px;
+    left: 75px;
+    display: flex; /* Usar flexbox para centrar el contenido */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+    font-size: 40px; /* Tamaño de fuente deseado */
+
+}
+
+.small-box span {
+        text-align: center; /* Alineación del texto */
+    display: inline-block; /* Hace que el span ocupe solo el ancho del texto */
+    max-width: 80%; /* Máximo ancho del texto dentro del cuadro */
+    overflow: hidden; /* Oculta el texto que exceda el ancho del cuadro */
+    white-space: nowrap; /* Evita que el texto se divida en múltiples líneas */
+    text-overflow: ellipsis; /* Agrega puntos suspensivos para indicar texto truncado */
+}
+.small-box::before {
+    content: ""; /* Agregar contenido al pseudo-elemento */
+    position: absolute;
+    top: 50%;
+    right: -70px; /* Ajustar la posición al lado derecho del rectángulo */
+    transform: translateY(-50%);
+    width: 30px; /* Ajustar el ancho del cuadrado */
+    height: 30px; /* Ajustar el alto del cuadrado */
+    border: 2px solid black;
+    background-color: white;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+    cursor: pointer; /* Cambiar el cursor a un puntero al pasar sobre el cuadro */ /* Agregar transición para un efecto suave */
+}
+
+.small-box.checked::before {
+    background-color: rgb(189, 4, 4); /* Cambiar el color de fondo cuando se marca */
+}
+
+.small-box.checked::after {
+    content: "✔"; /* Agregar marca de verificación */
+    position: absolute;
+    top: 50%;
+    right: -70px; /* Ajustar la posición al lado derecho del rectángulo */
+    transform: translateY(-50%);
+    font-size: 20px; /* Tamaño del icono de verificación */
+    color: white; /* Color del icono de verificación */
+}
+
+/* Estilos para el cuadro blanco */
+.white-box {
+    background-color: white;
+    width: 350px; /* Ancho del cuadro blanco */
+    height: 150px; /* Alto del cuadro blanco */
+    border-radius: 40px; /* Radio de los bordes */
+    position: relative;
+    top: -750px; /* Ajustar posición vertical */
+    left: 1500px; /* Ajustar posición horizontal */
+    cursor: pointer; /* Cambiar el cursor a un puntero al pasar sobre el cuadro */
+    display: flex; /* Usar flexbox para centrar el contenido */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+}
+
+.white-box p {
+    font-family: cursive, sans-serif; /* Tipo de fuente */
+    font-size: 40px; /* Tamaño de la fuente */
+    font-weight: bold; /* Negrita */
+    text-align: center; /* Alinear el texto al centro */
+}
+/* Estilos para el cuadro emergente de puntuación */
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
+    justify-content: center;
+    align-items: center;
+    z-index: 999; /* Asegurar que el cuadro emergente esté por encima de otros elementos */
+}
+
+.popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff; /* Color de fondo */
+    color: white; /* Color de texto */
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+/* Mostrar el cuadro emergente */
+.popup.show {
+    display: flex;
+}
+.content {
+    font-size: 50px; /* Tamaño de fuente deseado */
+    font-weight: bold; /* Opcional: estilo de fuente */
+    padding: 30px; /* Espaciado interno opcional */
+    pointer-events: none; /* Evita eventos de puntero, como clics y arrastrar y soltar */
+    user-select: none; /* Evita que el texto sea seleccionable */
+    text-align: center; /* Centra el texto horizontalmente */
+
+}

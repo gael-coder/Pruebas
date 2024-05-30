@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIDACI LETRAS</title>
+    <link rel="stylesheet" href="comentario.css">
+    <link rel="icon" href="DIDACTILETRAS.png" type="image/png">
+
+</head>
+
+<body>
+    <div class="Titulo">
+        COMENTARIO
+    </div>
+    <textarea id="texto" contenteditable="true" maxlength="500" placeholder="Escribe aquí...">
+    </textarea>
+    <button id="enviar" onclick="crearComentario()">ENVIAR</button>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal()">&times;</span>
+            <p>GRACIAS POR SUS COMENTARIOS</p>
+            <img src="regresar-sn fondo.png" alt="Regresar a la página inicial"
+                onclick="window.location.href = 'PantallaInicial.html';" style="width: 100px; height: auto;"
+                class="puntero">
+        </div>
+    </div>
+
+
+
+    <script>
+        let usuario;
+        document.addEventListener('DOMContentLoaded', function () {
+            usuario = localStorage.getItem('usuario');
+            console.log(usuario);
+        });
+
+        async function crearComentario() {
+            const texto = document.getElementById('texto').value; // Obtén el texto del comentario
+            const correo = usuario;
+
+            // Expresión regular para buscar palabras inapropiadas
+            const palabrasInapropiadas = /(|idiota|imbecil|estúpido|maldito|desgraciado|cabrón|mierda|coño|puta|pene|vagina|sexo|discriminación|racial|étnica|género|amenaza|violencia|blasfemia|religiosa|malparido|perra|zorra|culero|chinga|jodido|pedorro|vergazo|teta|cabronazo|gilipollas|pendejo|marica|maricón|bollera|lesbiana|jilipollas|guey|güey|culiao|huevón|pelotudo|boludo|puto|pedorra|mierdoso|zorrillo|pinche|pendejada|baboso|tarado|babosa|anormal|bastardo|cerdo|hijo de puta|gil|imbécil|mamarracho|metiche|naco|pata|perrazo|racista|ruco|rufián|sinvergüenza|tarugo|vulgar|atontado|asqueroso|mugroso|patán|pajero|vago|piruja|prostituta|putazo|racista|soplapollas|tragaesperma|tragaleche|verga|zurrapa|zoquete|bicho|cagada|pedorrete|caca|zurullo|cagón|ojete|cagada|vergon|pajero|mierdero|pollas|idiotada|tonto|necio|tontería)/gi;
+
+            const signosEspeciales = /^[\s!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]*$/;
+
+            // Verifica si el texto contiene palabras inapropiadas o solo signos especiales
+            if (palabrasInapropiadas.test(texto) || signosEspeciales.test(texto)) {
+                alert('El comentario contiene palabras inapropiadas o solo signos especiales. Por favor, modifica tu comentario.');
+                return;
+            }
+            try {
+                const response = await fetch("/crearComentario", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        correo: correo,
+                        texto: texto
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    if (data.message.startsWith('Se reactivó la lección')) {
+                        alert(data.message);
+                    } else {
+                        alert('Comentario creado correctamente');
+                    }
+                    location.reload();
+                } else {
+                    alert('Error al crear el comentario: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al crear el comentario por 2');
+            }
+        }
+    </script>
+</body>
+
+</html>
